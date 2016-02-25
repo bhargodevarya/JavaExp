@@ -7,6 +7,10 @@ public class Person {
 	private String state;
 	private String email;
 	
+	public Person() {
+		
+	}
+	
 	public Person(String name, Integer age, String state, String email) {
 		super();
 		this.name = name;

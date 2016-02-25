@@ -3,14 +3,26 @@
  */
 package com.bhargo.main;
 
+import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 
 import com.bhargo.domain.Person;
+import com.bhargo.service.PersonServiceMXBean;
+import com.bhargo.service.impl.PersonService;
 import com.bhargo.util.Util;
 
 /**
@@ -42,7 +54,26 @@ public class MainClass {
 	public static void main(String args[]) {
 		//To show user count for an email service	
 		//traditionalWay();
-		lambdaWay();
+		//lambdaWay();
+		//streamWay();
+		MBeanServer mserver = ManagementFactory.getPlatformMBeanServer();
+		PersonService personService = new PersonService();
+		try {
+			mserver.registerMBean(personService, new ObjectName("com.bhargo.service.impl:type=PersonService"));
+		} catch (InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException
+				| MalformedObjectNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while(true) {
+			System.out.println(personService.getPerson().getName());
+			try {
+				Thread.sleep(50000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	
@@ -52,6 +83,22 @@ public class MainClass {
 		util.providers.andThen(util.countByProviders).accept(personList, providers);
 		
 	}
+	
+	/*static void streamWay() {
+		List<Person> personList = createData();
+		Function<Person, String> split = (person) -> {
+			return person.getEmail().split("@")[1].split("\\.")[0];
+			};
+		personList.stream().map(split).collect(Collectors.toSet());
+		Map<Object,List<Object>> mapObj = personList.stream().collect(
+				Collectors.groupingBy(
+						(Person p) -> p.getAge(),
+						Collectors.mapping((Person p) -> p.getName(), Collectors.toList())
+						)
+				);
+		List<String> pList = personList.stream().collect(Collectors.mapping((Person p) -> p.getName(), Collectors.toList()));
+		pList.forEach(System.out::println);
+	}*/
 	
 	static void traditionalWay() {
 
