@@ -3,6 +3,7 @@
  */
 package com.bhargo.main;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
@@ -21,7 +20,6 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
 import com.bhargo.domain.Person;
-import com.bhargo.service.PersonServiceMXBean;
 import com.bhargo.service.impl.PersonService;
 import com.bhargo.util.Util;
 
@@ -51,13 +49,14 @@ public class MainClass {
 		return personList;
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException {
 		//To show user count for an email service	
 		//traditionalWay();
 		//lambdaWay();
 		//streamWay();
 		MBeanServer mserver = ManagementFactory.getPlatformMBeanServer();
 		PersonService personService = new PersonService();
+		personService.votersStream = createData().stream().filter(n -> n.getAge() >= 18);
 		try {
 			mserver.registerMBean(personService, new ObjectName("com.bhargo.service.impl:type=PersonService"));
 		} catch (InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException
@@ -65,15 +64,17 @@ public class MainClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		while(true) {
-			System.out.println(personService.getPerson().getName());
+		System.out.println(PersonService.collected);
+		while(!PersonService.collected) {
+			//System.out.println(personService.getPerson().getName());
 			try {
-				Thread.sleep(50000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+        
 	}
 	
 	

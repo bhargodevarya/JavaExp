@@ -9,5 +9,7 @@ public interface PersonServiceMXBean {
 	
 	void changeCase();
 	
+	void collect();
+	
 
 }
