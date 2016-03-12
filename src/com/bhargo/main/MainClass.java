@@ -23,6 +23,12 @@ import javax.management.ObjectName;
 
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
+import com.bhargo.datastructure.graphs.AVertex;
+import com.bhargo.datastructure.graphs.EmployeeGraph;
+import com.bhargo.datastructure.graphs.EmployeeVertex;
+import com.bhargo.datastructure.graphs.IEdge;
+import com.bhargo.datastructure.graphs.IVertex;
+import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.domain.Person;
 import com.bhargo.service.impl.PersonService;
 import com.bhargo.util.Util;
@@ -90,8 +96,47 @@ public class MainClass {
 		// streamWay();
 		// JMXDemo();
 		// listToMap();
+		setupGraph();
+
 	}
-	
+
+	static void setupGraph() {
+
+		Employee emp1 = new Employee();
+		emp1.setName("Khandekar");
+		Employee emp2 = new Employee();
+		emp2.setName("Money");
+		Employee emp3 = new Employee();
+		emp3.setName("Kiran");
+
+		//has to be represented as Map<node,set<edges>>
+		EmployeeGraph empGraph = new EmployeeGraph();
+		AVertex<Employee> vertex1 = new EmployeeVertex();
+		vertex1.setT(emp1);
+		AVertex<Employee> vertex2 = new EmployeeVertex();
+		vertex2.setT(emp2);
+		AVertex<Employee> vertex3 = new EmployeeVertex();
+		vertex3.setT(emp3);
+		empGraph.addVertex(vertex1);
+		empGraph.addConnection(vertex1, vertex2);
+		empGraph.addConnection(vertex1, vertex3);
+		//Map<IVertex<Employee>, Set<IEdge<Employee>>> map = empGraph.getMap();
+		Set<Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>>> set = empGraph.getMap().entrySet();
+		for (Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>> entry : set) {
+			System.out.println("from " + entry.getKey());
+			Set<IEdge<Employee>> empSet = entry.getValue();
+			Iterator<IEdge<Employee>> itrVal = empSet.iterator();
+			while (itrVal.hasNext()) {
+				List<IVertex<Employee>> list = itrVal.next().getNodes();
+				System.out.println("to  " + list.get(list.size() -1));
+				/*for (IVertex<Employee> emp : list) {
+					System.out.println(emp.getT().getName());
+				}*/
+			}
+		}
+
+	}
+
 	static void listToMap() {
 		List<fruit> bigList = createABigList();
 		System.out.println(bigList.size());
