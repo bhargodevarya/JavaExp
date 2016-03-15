@@ -27,6 +27,7 @@ import com.bhargo.datastructure.graphs.AVertex;
 import com.bhargo.datastructure.graphs.EmployeeGraph;
 import com.bhargo.datastructure.graphs.EmployeeVertex;
 import com.bhargo.datastructure.graphs.IEdge;
+import com.bhargo.datastructure.graphs.IGraph;
 import com.bhargo.datastructure.graphs.IVertex;
 import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.domain.Person;
@@ -41,6 +42,47 @@ public class MainClass {
 
 	static Util<Person> util = new Util<Person>();
 
+	public static void main(String args[]) throws IOException {
+		// To show user count for an email service
+		// traditionalWay();
+		// lambdaWay();
+		// streamWay();
+		// JMXDemo();
+		// listToMap();
+		setupGraph();
+		
+
+	}
+
+	static void setupGraph() {
+
+		EmployeeGraph empGraph = (EmployeeGraph)DSUtil.setUpGraph();
+		//Map<IVertex<Employee>, Set<IEdge<Employee>>> map = empGraph.getMap();
+		Set<Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>>> set = empGraph.getMap().entrySet();
+		for (Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>> entry : set) {
+			//System.out.println("from " + entry.getKey());
+			Set<IEdge<Employee>> empSet = entry.getValue();
+			Iterator<IEdge<Employee>> itrVal = empSet.iterator();
+			while (itrVal.hasNext()) {
+				List<IVertex<Employee>> list = itrVal.next().getNodes();
+				//System.out.println("between  " +  list.get(0) + " " + list.get(list.size() -1));
+				/*for (IVertex<Employee> emp : list) {
+					System.out.println(emp.getT().getName());
+				}*/
+			}
+		}
+		Employee emp2 = new Employee();
+		emp2.setName("Gautam");
+		AVertex<Employee> vertexToFind = new EmployeeVertex();
+		vertexToFind.setT(emp2);
+		Employee emp3 = new Employee();
+		emp3.setName("Khandekar");
+		AVertex<Employee> vertexToStart = new EmployeeVertex();
+		vertexToStart.setT(emp3);
+		DSUtil.performBFS(((IGraph<Employee>)empGraph),vertexToStart, vertexToFind);
+
+	}
+	
 	static List<Person> createData() {
 		List<Person> personList = null;
 		try {
@@ -87,54 +129,6 @@ public class MainClass {
 			}
 		}
 		return list;
-	}
-
-	public static void main(String args[]) throws IOException {
-		// To show user count for an email service
-		// traditionalWay();
-		// lambdaWay();
-		// streamWay();
-		// JMXDemo();
-		// listToMap();
-		setupGraph();
-
-	}
-
-	static void setupGraph() {
-
-		Employee emp1 = new Employee();
-		emp1.setName("Khandekar");
-		Employee emp2 = new Employee();
-		emp2.setName("Money");
-		Employee emp3 = new Employee();
-		emp3.setName("Kiran");
-
-		//has to be represented as Map<node,set<edges>>
-		EmployeeGraph empGraph = new EmployeeGraph();
-		AVertex<Employee> vertex1 = new EmployeeVertex();
-		vertex1.setT(emp1);
-		AVertex<Employee> vertex2 = new EmployeeVertex();
-		vertex2.setT(emp2);
-		AVertex<Employee> vertex3 = new EmployeeVertex();
-		vertex3.setT(emp3);
-		empGraph.addVertex(vertex1);
-		empGraph.addConnection(vertex1, vertex2);
-		empGraph.addConnection(vertex1, vertex3);
-		//Map<IVertex<Employee>, Set<IEdge<Employee>>> map = empGraph.getMap();
-		Set<Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>>> set = empGraph.getMap().entrySet();
-		for (Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>> entry : set) {
-			System.out.println("from " + entry.getKey());
-			Set<IEdge<Employee>> empSet = entry.getValue();
-			Iterator<IEdge<Employee>> itrVal = empSet.iterator();
-			while (itrVal.hasNext()) {
-				List<IVertex<Employee>> list = itrVal.next().getNodes();
-				System.out.println("to  " + list.get(list.size() -1));
-				/*for (IVertex<Employee> emp : list) {
-					System.out.println(emp.getT().getName());
-				}*/
-			}
-		}
-
 	}
 
 	static void listToMap() {

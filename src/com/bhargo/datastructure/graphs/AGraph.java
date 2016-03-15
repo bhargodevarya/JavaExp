@@ -3,11 +3,12 @@ package com.bhargo.datastructure.graphs;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AGraph<T> implements IGraph<T> {
 	
 	public int numOfVertices=0;
-	public Map<IVertex<T>,Set<IEdge<T>>> map = new HashMap<>();	
+	public Map<IVertex<T>,Set<IEdge<T>>> map = new HashMap<IVertex<T>, Set<IEdge<T>>>(); 
 
 	public int getNumOfVertices() {
 		return numOfVertices;

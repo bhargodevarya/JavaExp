@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.domain.Person;
 
 /**
