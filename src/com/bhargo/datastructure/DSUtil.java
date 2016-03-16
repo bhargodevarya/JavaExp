@@ -1,15 +1,20 @@
 package com.bhargo.datastructure;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
 import com.bhargo.datastructure.graphs.AGraph;
 import com.bhargo.datastructure.graphs.AVertex;
+import com.bhargo.datastructure.graphs.DistanceVertex;
+import com.bhargo.datastructure.graphs.EmployeeEdge;
 import com.bhargo.datastructure.graphs.EmployeeGraph;
 import com.bhargo.datastructure.graphs.EmployeeVertex;
 import com.bhargo.datastructure.graphs.IEdge;
@@ -87,22 +92,22 @@ public class DSUtil {
 		vertex7.setT(emp7);
 		
 		empGraph.addVertex(vertex1);
-		empGraph.addConnection(vertex1, vertex2);
-		empGraph.addConnection(vertex1, vertex3);
-		empGraph.addConnection(vertex2, vertex1);
-		empGraph.addConnection(vertex3, vertex1);
-		empGraph.addConnection(vertex2, vertex4);
-		empGraph.addConnection(vertex4, vertex2);
-		empGraph.addConnection(vertex3, vertex4);
-		empGraph.addConnection(vertex4, vertex3);
-		empGraph.addConnection(vertex4, vertex5);
-		empGraph.addConnection(vertex5, vertex4);
-		empGraph.addConnection(vertex5, vertex6);
-		empGraph.addConnection(vertex6, vertex5);
-		empGraph.addConnection(vertex2, vertex6);
-		empGraph.addConnection(vertex6, vertex2);
-		empGraph.addConnection(vertex5, vertex7);
-		empGraph.addConnection(vertex7, vertex5);
+		empGraph.addConnection(vertex1, vertex2, 3);
+		empGraph.addConnection(vertex1, vertex3, 5);
+		empGraph.addConnection(vertex2, vertex1, 6);
+		empGraph.addConnection(vertex3, vertex1, 1);
+		empGraph.addConnection(vertex2, vertex4, 9);
+		empGraph.addConnection(vertex4, vertex2, 2);
+		empGraph.addConnection(vertex3, vertex4, 5);
+		empGraph.addConnection(vertex4, vertex3, 1);
+		empGraph.addConnection(vertex4, vertex5, 6);
+		empGraph.addConnection(vertex5, vertex4, 7);
+		empGraph.addConnection(vertex5, vertex6, 1);
+		empGraph.addConnection(vertex6, vertex5, 9);
+		empGraph.addConnection(vertex2, vertex6, 2);
+		empGraph.addConnection(vertex6, vertex2, 6);
+		empGraph.addConnection(vertex5, vertex7, 1);
+		empGraph.addConnection(vertex7, vertex5, 8);
 		
 		return empGraph;
 	}
@@ -114,8 +119,7 @@ public class DSUtil {
 		} else {
 			System.out.println("Not a valid graph instance");
 			return;
-		}
-		
+		}		
 		IVertex<Employee> neighbour = null;
 		//Set<IEdge<Employee>> neighbourSet = null;
 		Queue<IVertex<Employee>> queue = new LinkedList<IVertex<Employee>>();
@@ -129,9 +133,7 @@ public class DSUtil {
 				queue.add(entry.getKey());
 				break;
 			}
-		}
-		
-		
+		}		
 		while(!queue.isEmpty()) {
 			//System.out.println("peeking " + queue.peek());
 			IVertex<Employee> vertex = queue.remove();
@@ -141,17 +143,91 @@ public class DSUtil {
 				
 			} else {
 				if(search(graphRep, vertex, neighbour, vertexToFind, queue, visited)) {
+					System.out.println("found " + vertexToFind.getT().getName());
 					break;
 				}
 			}
 			
-		}
-		
+		}		
 		System.out.println("overall path");
 		for (IVertex<Employee> iVertex : visited) {
 			System.out.print(iVertex + " ");
 		}
-
+	}
+	
+	public static void setupDataForDijikstra(IGraph<Employee> graph,IVertex<Employee> vertexToStart) {
+		
+		
+		Map<IVertex<Employee>, Integer> distanceMap = new HashMap<IVertex<Employee>, Integer>();
+		EmployeeGraph empGraph;
+		if(graph instanceof EmployeeGraph) {
+			empGraph = (EmployeeGraph)graph;
+		} else {
+			System.out.println("Not a valid graph instance");
+			return;
+		}
+		Map<IVertex<Employee>, Set<IEdge<Employee>>> edgeMap = empGraph.getMap();
+		Iterator<IVertex<Employee>> it = edgeMap.keySet().iterator();
+		while(it.hasNext()) {
+			IVertex<Employee> vertex = it.next();
+			edgeMap.put(vertex, new HashSet<IEdge<Employee>>());
+		}
+		
+		distanceMap.keySet().addAll(empGraph.getMap().keySet());
+		Iterator<IVertex<Employee>> itr = distanceMap.keySet().iterator();
+		while(itr.hasNext()) {
+			distanceMap.put(itr.next(), null);
+		}
+		
+		//create a PQ where the priority is decided by the edge weight
+		//each item has K,V where K can be repeated, K is distance, V is vertex
+		
+		PriorityQueue<DistanceVertex<Integer, IVertex<Employee>>> pq = new PriorityQueue<DistanceVertex<Integer,IVertex<Employee>>>();
+		
+		//populate pq with the source, it has distance as 0
+		DistanceVertex<Integer, IVertex<Employee>> start = new DistanceVertex<>(0, vertexToStart);
+		
+		while(!pq.isEmpty()) {
+			//DijikstraSP(graph,pq.poll());
+		}
+		
+		
+	
+	}
+	
+	public static void DijikstraSP(IGraph<Employee> graph,DistanceVertex<Integer, IVertex<Employee>> start,
+			Map<IVertex<Employee>, Integer> distanceMap, PriorityQueue<DistanceVertex<Integer, IVertex<Employee>>> pq) {
+		
+		//Map<IVertex<Employee>, Integer> distanceMap = new HashMap<IVertex<Employee>, Integer>();
+		EmployeeGraph empGraph;
+		if(graph instanceof EmployeeGraph) {
+			empGraph = (EmployeeGraph)graph;
+		} else {
+			System.out.println("Not a valid graph instance");
+			return;
+		}
+		
+		//graph rep
+		Map<IVertex<Employee>, Set<IEdge<Employee>>> edgeMap = empGraph.getMap();
+		 Set<IEdge<Employee>> edgeSet = edgeMap.get(start.getValue());
+		 Iterator<IEdge<Employee>> itr = edgeSet.iterator();
+		 while(itr.hasNext()) {
+			 IEdge<Employee> edge = itr.next();
+			 IVertex<Employee> toVertex = edge.getNodes().get(1);
+			 Integer distanceFromMap = distanceMap.get(toVertex);
+			 Integer sourceDistance = distanceMap.get(start.getKey());
+			 Integer actualDistance = ((EmployeeEdge<Employee>)edge).getWeight();
+			 if(sourceDistance + actualDistance < distanceFromMap) {
+				 if(pq.contains(null)) {
+					 //Require a DS, that allows updating on priority queues
+					 //pq.chageKey();
+				 } else {
+					 //this should re structure the queue
+					 pq.add(new DistanceVertex<Integer, IVertex<Employee>>(sourceDistance + actualDistance, toVertex));					 
+				 }
+			 }
+		 }
+		
 	}
 	
 	public static boolean search(Map<IVertex<Employee>, Set<IEdge<Employee>>> graphRep, IVertex<Employee> vertex,

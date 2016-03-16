@@ -80,6 +80,7 @@ public class MainClass {
 		emp3.setName("Khandekar");
 		AVertex<Employee> vertexToStart = new EmployeeVertex();
 		vertexToStart.setT(emp3);
+		//finds the node, but still traverses unnecessary nodes
 		DSUtil.performBFS(((IGraph<Employee>)empGraph),vertexToStart, vertexToFind);
 
 	}

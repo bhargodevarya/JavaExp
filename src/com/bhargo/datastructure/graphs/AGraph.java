@@ -37,6 +37,8 @@ public abstract class AGraph<T> implements IGraph<T> {
 	public abstract void addNode(IVertex<T> vertex);
 	
 	public abstract void addConnection(IVertex<T> from, IVertex<T> to);
+	
+	public abstract void addConnection(IVertex<T> from, IVertex<T> to,int weight);
 
 	
 }
