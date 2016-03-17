@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -51,8 +52,6 @@ public class MainClass {
 		// JMXDemo();
 		// listToMap();
 		setupGraph();
-		
-
 	}
 
 	static void setupGraph() {
@@ -81,7 +80,9 @@ public class MainClass {
 		AVertex<Employee> vertexToStart = new EmployeeVertex();
 		vertexToStart.setT(emp3);
 		//finds the node, but still traverses unnecessary nodes
-		DSUtil.performBFS(((IGraph<Employee>)empGraph),vertexToStart, vertexToFind);
+		//DSUtil.performBFS(((IGraph<Employee>)empGraph),vertexToStart, vertexToFind);
+		
+		DSUtil.setupDataForDijikstra(empGraph, vertexToStart);
 
 	}
 	

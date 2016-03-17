@@ -1,18 +1,19 @@
 package com.bhargo.datastructure;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 import com.bhargo.datastructure.graphs.AGraph;
 import com.bhargo.datastructure.graphs.AVertex;
+import com.bhargo.datastructure.graphs.AdaptablePQ;
 import com.bhargo.datastructure.graphs.DistanceVertex;
 import com.bhargo.datastructure.graphs.EmployeeEdge;
 import com.bhargo.datastructure.graphs.EmployeeGraph;
@@ -99,7 +100,7 @@ public class DSUtil {
 		empGraph.addConnection(vertex2, vertex4, 9);
 		empGraph.addConnection(vertex4, vertex2, 2);
 		empGraph.addConnection(vertex3, vertex4, 5);
-		empGraph.addConnection(vertex4, vertex3, 1);
+		empGraph.addConnection(vertex4, vertex3, 9);
 		empGraph.addConnection(vertex4, vertex5, 6);
 		empGraph.addConnection(vertex5, vertex4, 7);
 		empGraph.addConnection(vertex5, vertex6, 1);
@@ -108,6 +109,7 @@ public class DSUtil {
 		empGraph.addConnection(vertex6, vertex2, 6);
 		empGraph.addConnection(vertex5, vertex7, 1);
 		empGraph.addConnection(vertex7, vertex5, 8);
+		empGraph.addConnection(vertex2, vertex3, 2);
 		
 		return empGraph;
 	}
@@ -156,9 +158,7 @@ public class DSUtil {
 	}
 	
 	public static void setupDataForDijikstra(IGraph<Employee> graph,IVertex<Employee> vertexToStart) {
-		
-		
-		Map<IVertex<Employee>, Integer> distanceMap = new HashMap<IVertex<Employee>, Integer>();
+		Map<IVertex<Employee>, Integer> distanceMap = new LinkedHashMap<IVertex<Employee>, Integer>();
 		EmployeeGraph empGraph;
 		if(graph instanceof EmployeeGraph) {
 			empGraph = (EmployeeGraph)graph;
@@ -167,39 +167,97 @@ public class DSUtil {
 			return;
 		}
 		Map<IVertex<Employee>, Set<IEdge<Employee>>> edgeMap = empGraph.getMap();
+		
+		//map that contains the vertex with the shortest path
+		Map<IVertex<Employee>, IEdge<Employee>> sptEdgeMap = new HashMap<IVertex<Employee>, IEdge<Employee>>();
+		
 		Iterator<IVertex<Employee>> it = edgeMap.keySet().iterator();
 		while(it.hasNext()) {
 			IVertex<Employee> vertex = it.next();
-			edgeMap.put(vertex, new HashSet<IEdge<Employee>>());
+			//edgeMapCopy.put(vertex, new HashSet<IEdge<Employee>>());
+			distanceMap.put(vertex, null);
 		}
 		
-		distanceMap.keySet().addAll(empGraph.getMap().keySet());
-		Iterator<IVertex<Employee>> itr = distanceMap.keySet().iterator();
-		while(itr.hasNext()) {
-			distanceMap.put(itr.next(), null);
-		}
 		
 		//create a PQ where the priority is decided by the edge weight
 		//each item has K,V where K can be repeated, K is distance, V is vertex
-		
-		PriorityQueue<DistanceVertex<Integer, IVertex<Employee>>> pq = new PriorityQueue<DistanceVertex<Integer,IVertex<Employee>>>();
+		AdaptablePQ<DistanceVertex<Integer, IVertex<Employee>>> adaptablePQ = new AdaptablePQ<DistanceVertex<Integer,IVertex<Employee>>>();
 		
 		//populate pq with the source, it has distance as 0
 		DistanceVertex<Integer, IVertex<Employee>> start = new DistanceVertex<>(0, vertexToStart);
+		adaptablePQ.add(start);
 		
-		while(!pq.isEmpty()) {
-			//DijikstraSP(graph,pq.poll());
+		//
+		while(!adaptablePQ.isEmpty()) {
+			relax(empGraph, adaptablePQ.poll(), distanceMap, adaptablePQ, sptEdgeMap);
 		}
 		
+		IVertex<Employee> temp = null;
+		/*Iterator<IVertex<Employee>> itr = distanceMap.keySet().iterator();
+		while(itr.hasNext()) {
+			temp = itr.next();
+			System.out.println("key " + temp  + " value " + distanceMap.get(temp));
+		}*/	
 		
-	
+		
+		//uncomment for debugging
+		/*Iterator<IVertex<Employee>> sptItr = sptEdgeMap.keySet().iterator();
+		while(sptItr.hasNext()) {
+			temp = sptItr.next();
+			System.out.println(temp + " > " +sptEdgeMap.get(temp));
+		}*/
+		
+		Employee emp2 = new Employee();
+		emp2.setName("Kiran");
+		AVertex<Employee> from = new EmployeeVertex();
+		from.setT(emp2);
+		Employee emp3 = new Employee();
+		emp3.setName("Aditya");
+		AVertex<Employee> to = new EmployeeVertex();
+		to.setT(emp3);
+		
+		pathTo(distanceMap,to,from,sptEdgeMap);
+		
+		
 	}
 	
-	public static void DijikstraSP(IGraph<Employee> graph,DistanceVertex<Integer, IVertex<Employee>> start,
-			Map<IVertex<Employee>, Integer> distanceMap, PriorityQueue<DistanceVertex<Integer, IVertex<Employee>>> pq) {
+	public static boolean hasPath(Map<IVertex<Employee>, Integer> distanceMap, IVertex<Employee> vertexToFind) {
+		return distanceMap.get(vertexToFind) == null;
+	}
+	
+	public static void pathTo(Map<IVertex<Employee>, Integer> distanceMap, IVertex<Employee> vertexToFind,
+			IVertex<Employee> vertexToStart, Map<IVertex<Employee>, IEdge<Employee>> sptEdgeMap) {
+		/*if(!hasPath(distanceMap, vertexToFind)) {
+			return;
+		}*/
+		IVertex<Employee> vertexToFindCopy = vertexToFind;
+		Stack<IEdge<Employee>> edgeStack = new Stack<IEdge<Employee>>();
+		while(!vertexToFind.equals(vertexToStart)) {
+			vertexToFind = getEdge(sptEdgeMap, vertexToFind, edgeStack);
+		}
+		
+		System.out.println(" from "+ vertexToStart.getT().getName() + " to " + vertexToFindCopy.getT().getName() + " path is ");
+		while(edgeStack.size() > 0) {
+			System.out.print(edgeStack.pop() + " ");
+		}
+	}
+	
+	private static IVertex<Employee> getEdge(Map<IVertex<Employee>, IEdge<Employee>> sptEdgeMap, IVertex<Employee> vertexToFind,
+			Stack<IEdge<Employee>> edgeStack) {
+		//List<IVertex<Employee>> nodes = sptEdgeMap.get(vertexToFind).getNodes();
+		edgeStack.push(sptEdgeMap.get(vertexToFind));
+		
+		return sptEdgeMap.get(vertexToFind).getNodes().get(0);
+		
+	}
+	
+	public static void relax(IGraph<Employee> graph,DistanceVertex<Integer, IVertex<Employee>> start,
+			Map<IVertex<Employee>, Integer> distanceMap, AdaptablePQ<DistanceVertex<Integer, IVertex<Employee>>> pq,
+			Map<IVertex<Employee>, IEdge<Employee>> sptEdgeMap) {
 		
 		//Map<IVertex<Employee>, Integer> distanceMap = new HashMap<IVertex<Employee>, Integer>();
 		EmployeeGraph empGraph;
+		Set<IEdge<Employee>> edgeSet;
 		if(graph instanceof EmployeeGraph) {
 			empGraph = (EmployeeGraph)graph;
 		} else {
@@ -209,18 +267,33 @@ public class DSUtil {
 		
 		//graph rep
 		Map<IVertex<Employee>, Set<IEdge<Employee>>> edgeMap = empGraph.getMap();
-		 Set<IEdge<Employee>> edgeSet = edgeMap.get(start.getValue());
-		 Iterator<IEdge<Employee>> itr = edgeSet.iterator();
-		 while(itr.hasNext()) {
-			 IEdge<Employee> edge = itr.next();
+		
+		//System.out.println(start.getValue().getT().getName());
+		
+		//get all the edges for the start vertex 
+		edgeSet = edgeMap.get(start.getValue());
+	 
+		 Iterator<IEdge<Employee>> edgeSetItr = edgeSet.iterator();
+ 
+		 //traverse the edges
+		 while(edgeSetItr.hasNext()) {
+			 IEdge<Employee> edge = edgeSetItr.next();
+			 //get the to node
 			 IVertex<Employee> toVertex = edge.getNodes().get(1);
-			 Integer distanceFromMap = distanceMap.get(toVertex);
-			 Integer sourceDistance = distanceMap.get(start.getKey());
-			 Integer actualDistance = ((EmployeeEdge<Employee>)edge).getWeight();
+			 
+			 
+			 Integer distanceFromMap = distanceMap.get(toVertex) == null ? Integer.MAX_VALUE : distanceMap.get(toVertex);
+			 Integer sourceDistance = distanceMap.get(start.getValue()) == null ? 0:distanceMap.get(start.getValue());
+			 Integer actualDistance = Integer.valueOf(((EmployeeEdge<Employee>)edge).getWeight()) == null ? 0:((EmployeeEdge<Employee>)edge).getWeight() ;
+			 
+			 DistanceVertex<Integer, IVertex<Employee>> dv = new DistanceVertex<Integer, IVertex<Employee>>(toVertex);
 			 if(sourceDistance + actualDistance < distanceFromMap) {
-				 if(pq.contains(null)) {
+				 distanceMap.put(toVertex, sourceDistance + actualDistance);
+				 sptEdgeMap.put(toVertex, edge);
+				 if(pq.containsVertex(dv)) {
 					 //Require a DS, that allows updating on priority queues
-					 //pq.chageKey();
+					 //something like pq.chageKey();
+					 ((AdaptablePQ)pq).updateElement(dv, sourceDistance + actualDistance);				
 				 } else {
 					 //this should re structure the queue
 					 pq.add(new DistanceVertex<Integer, IVertex<Employee>>(sourceDistance + actualDistance, toVertex));					 

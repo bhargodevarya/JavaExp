@@ -18,6 +18,10 @@ public abstract class AGraph<T> implements IGraph<T> {
 		return map;
 	}
 
+	public void setMap(Map<IVertex<T>, Set<IEdge<T>>> map) {
+		this.map = map;
+	}
+
 	@Override
 	public void addVertex(IVertex<T> vertex) {	
 		numOfVertices++;

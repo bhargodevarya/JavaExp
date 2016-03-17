@@ -13,12 +13,15 @@ public class EmployeeVertex extends AVertex<Employee> {
 		// TODO Auto-generated method stub
 		if(obj instanceof EmployeeVertex) {
 			EmployeeVertex emp = (EmployeeVertex)obj;
-			return this.getT().getName().equals(emp.getT().getName());
+			return this.getT().getName().equalsIgnoreCase(emp.getT().getName());
 		} else {
 			return false;
 		}
 	}
-	
-	
 
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return getT().getName().hashCode();
+	}
 }
