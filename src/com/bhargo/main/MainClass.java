@@ -3,18 +3,22 @@
  */
 package com.bhargo.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.RecursiveTask;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
@@ -29,7 +33,6 @@ import com.bhargo.datastructure.graphs.AVertex;
 import com.bhargo.datastructure.graphs.EmployeeGraph;
 import com.bhargo.datastructure.graphs.EmployeeVertex;
 import com.bhargo.datastructure.graphs.IEdge;
-import com.bhargo.datastructure.graphs.IGraph;
 import com.bhargo.datastructure.graphs.IVertex;
 import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.domain.Person;
@@ -51,7 +54,51 @@ public class MainClass {
 		// streamWay();
 		// JMXDemo();
 		// listToMap();
-		setupGraph();
+		//setupGraph();
+		forkJoinDemo();
+	}
+	
+	static void forkJoinDemo() {
+		myRecursiveAction action = new myRecursiveAction("/home/hadoop/test");
+		ForkJoinPool pool = new ForkJoinPool();
+		/* pool.execute(action); */
+		try {
+			pool.submit(action).get().stream().forEach(System.out::println);
+			System.out.println(pool.getParallelism());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	static class myRecursiveAction extends RecursiveTask<List<String>> {
+		private String location;
+
+		public myRecursiveAction(String location) {
+			super();
+			this.location = location;
+		}
+
+		@Override
+		protected List<String> compute() {
+			final File[] file = { new File(location) };
+			List<String> fileList = new ArrayList<>();
+			List<RecursiveTask<List<String>>> actionList = new ArrayList<>();
+			Arrays.asList(file[0].list()).stream().forEach((n) -> {
+				if (new File(n).isDirectory()) {
+					myRecursiveAction recurAction = new myRecursiveAction(new File(n).getAbsolutePath());
+					recurAction.fork();
+					actionList.add(recurAction);
+				} else {
+					fileList.add(n);
+				}
+			});
+			actionList.forEach(n -> fileList.addAll(n.join()));
+			return fileList;
+		}
 	}
 
 	static void setupGraph() {
