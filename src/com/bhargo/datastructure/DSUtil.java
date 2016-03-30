@@ -121,7 +121,8 @@ public class DSUtil {
 		} else {
 			System.out.println("Not a valid graph instance");
 			return;
-		}		
+		}	
+		int seeks = empGraph.getMap().size();
 		IVertex<Employee> neighbour = null;
 		//Set<IEdge<Employee>> neighbourSet = null;
 		Queue<IVertex<Employee>> queue = new LinkedList<IVertex<Employee>>();
@@ -141,17 +142,23 @@ public class DSUtil {
 			IVertex<Employee> vertex = queue.remove();
 			//System.out.println("visiting " + vertex);
 			visited.add(vertex);
+			seeks--;
 			if(vertex.equals(vertexToFind)) {
 				
 			} else {
 				if(search(graphRep, vertex, neighbour, vertexToFind, queue, visited)) {
 					System.out.println("found " + vertexToFind.getT().getName());
 					break;
+				} else if(seeks > 0){
+					System.out.println("still looking");
+				} else {
+					System.out.println("Node doesnot exist");
+					break;
 				}
 			}
 			
 		}		
-		System.out.println("overall path");
+		System.out.println("Vertices traversed");
 		for (IVertex<Employee> iVertex : visited) {
 			System.out.print(iVertex + " ");
 		}
@@ -201,18 +208,18 @@ public class DSUtil {
 		
 		
 		//uncomment for debugging
-		/*Iterator<IVertex<Employee>> sptItr = sptEdgeMap.keySet().iterator();
+		Iterator<IVertex<Employee>> sptItr = sptEdgeMap.keySet().iterator();
 		while(sptItr.hasNext()) {
 			temp = sptItr.next();
 			System.out.println(temp + " > " +sptEdgeMap.get(temp));
-		}*/
+		}
 		
 		Employee emp2 = new Employee();
-		emp2.setName("Kiran");
+		emp2.setName("Khandekar");
 		AVertex<Employee> from = new EmployeeVertex();
 		from.setT(emp2);
 		Employee emp3 = new Employee();
-		emp3.setName("Aditya");
+		emp3.setName("Gautam");
 		AVertex<Employee> to = new EmployeeVertex();
 		to.setT(emp3);
 		

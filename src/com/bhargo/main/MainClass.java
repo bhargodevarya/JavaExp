@@ -19,6 +19,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.Executors;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntBinaryOperator;
+import java.util.function.IntFunction;
+import java.util.function.IntUnaryOperator;
+import java.util.stream.Collectors;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
@@ -54,12 +62,13 @@ public class MainClass {
 		// streamWay();
 		// JMXDemo();
 		// listToMap();
-		//setupGraph();
-		forkJoinDemo();
+		// setupGraph();
+		//forkJoinDemo();
+		//curryDemo(createData());
 	}
-	
+
 	static void forkJoinDemo() {
-		myRecursiveAction action = new myRecursiveAction("/home/hadoop/test");
+		myRecursiveAction action = new myRecursiveAction("/home/barya/jars");
 		ForkJoinPool pool = new ForkJoinPool();
 		/* pool.execute(action); */
 		try {
@@ -73,7 +82,7 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
-	
+
 	static class myRecursiveAction extends RecursiveTask<List<String>> {
 		private String location;
 
@@ -87,35 +96,77 @@ public class MainClass {
 			final File[] file = { new File(location) };
 			List<String> fileList = new ArrayList<>();
 			List<RecursiveTask<List<String>>> actionList = new ArrayList<>();
-			Arrays.asList(file[0].list()).stream().forEach((n) -> {
-				if (new File(n).isDirectory()) {
-					myRecursiveAction recurAction = new myRecursiveAction(new File(n).getAbsolutePath());
-					recurAction.fork();
-					actionList.add(recurAction);
-				} else {
-					fileList.add(n);
-				}
-			});
+			Arrays.asList(file[0].list())
+					.stream()
+					.forEach(
+							(n) -> {
+								if (new File(n).isDirectory()) {
+									myRecursiveAction recurAction = new myRecursiveAction(
+											new File(n).getAbsolutePath());
+									recurAction.fork();
+									actionList.add(recurAction);
+								} else {
+									fileList.add(n);
+								}
+							});
 			actionList.forEach(n -> fileList.addAll(n.join()));
 			return fileList;
 		}
 	}
 
+	public static void curryDemo(List<Person> personList) {
+		Function<List<Person>, BiFunction<List<Person>, String, List<Object>>> func = n -> (
+				list, domain) -> n.stream().map((e) -> {
+			return e.getName() + "@" + domain + ".com";
+		}).collect(Collectors.toList());
+
+		func.apply(personList).apply(null, "google")
+				.forEach(MainClass::testMethod);
+		// func.apply(personList).apply(null,
+		// "google").forEach(System.out::println);
+		Consumer<String> cons = System.out::println;
+		cons.accept("Hello");
+	}
+
+	public static void closureDemo() {
+		int i = 10;
+		String[] str = { "hi", "" };
+
+		Runnable runn = () -> {
+			if (i == 10) {
+				System.out.println("The value is 10");
+			} else {
+				System.out.println("The value is not 10");
+			}
+			str[0] = str[0].concat("concat");
+		};
+
+		runn.run();
+		System.out.println(str[0]);
+	}
+
+	static void testMethod(Object obj) {
+		System.out.println(obj);
+	}
+
 	static void setupGraph() {
 
-		EmployeeGraph empGraph = (EmployeeGraph)DSUtil.setUpGraph();
-		//Map<IVertex<Employee>, Set<IEdge<Employee>>> map = empGraph.getMap();
-		Set<Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>>> set = empGraph.getMap().entrySet();
+		EmployeeGraph empGraph = (EmployeeGraph) DSUtil.setUpGraph();
+		// Map<IVertex<Employee>, Set<IEdge<Employee>>> map = empGraph.getMap();
+		Set<Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>>> set = empGraph
+				.getMap().entrySet();
 		for (Map.Entry<IVertex<Employee>, Set<IEdge<Employee>>> entry : set) {
-			//System.out.println("from " + entry.getKey());
+			// System.out.println("from " + entry.getKey());
 			Set<IEdge<Employee>> empSet = entry.getValue();
 			Iterator<IEdge<Employee>> itrVal = empSet.iterator();
 			while (itrVal.hasNext()) {
 				List<IVertex<Employee>> list = itrVal.next().getNodes();
-				//System.out.println("between  " +  list.get(0) + " " + list.get(list.size() -1));
-				/*for (IVertex<Employee> emp : list) {
-					System.out.println(emp.getT().getName());
-				}*/
+				// System.out.println("between  " + list.get(0) + " " +
+				// list.get(list.size() -1));
+				/*
+				 * for (IVertex<Employee> emp : list) {
+				 * System.out.println(emp.getT().getName()); }
+				 */
 			}
 		}
 		Employee emp2 = new Employee();
@@ -126,13 +177,14 @@ public class MainClass {
 		emp3.setName("Khandekar");
 		AVertex<Employee> vertexToStart = new EmployeeVertex();
 		vertexToStart.setT(emp3);
-		//finds the node, but still traverses unnecessary nodes
-		//DSUtil.performBFS(((IGraph<Employee>)empGraph),vertexToStart, vertexToFind);
-		
+		// finds the node, but still traverses unnecessary nodes
+		// DSUtil.performBFS(((IGraph<Employee>)empGraph),vertexToStart,
+		// vertexToFind);
+
 		DSUtil.setupDataForDijikstra(empGraph, vertexToStart);
 
 	}
-	
+
 	static List<Person> createData() {
 		List<Person> personList = null;
 		try {
@@ -146,7 +198,8 @@ public class MainClass {
 			personList.add(nik);
 			personList.add(john);
 		} catch (Exception e) {
-			System.out.println("There has been an error while creating the data set");
+			System.out
+					.println("There has been an error while creating the data set");
 		}
 		return personList;
 	}
@@ -191,11 +244,13 @@ public class MainClass {
 	static void JMXDemo() {
 		MBeanServer mserver = ManagementFactory.getPlatformMBeanServer();
 		PersonService personService = new PersonService();
-		personService.votersStream = createData().stream().filter(n -> n.getAge() >= 18);
+		personService.votersStream = createData().stream().filter(
+				n -> n.getAge() >= 18);
 		try {
-			mserver.registerMBean(personService, new ObjectName("com.bhargo.service.impl:type=PersonService"));
-		} catch (InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException
-				| MalformedObjectNameException e) {
+			mserver.registerMBean(personService, new ObjectName(
+					"com.bhargo.service.impl:type=PersonService"));
+		} catch (InstanceAlreadyExistsException | MBeanRegistrationException
+				| NotCompliantMBeanException | MalformedObjectNameException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -215,7 +270,8 @@ public class MainClass {
 	static void lambdaWay() {
 		List<Person> personList = createData();
 		Set<String> providers = new HashSet<String>();
-		util.providers.andThen(util.countByProviders).accept(personList, providers);
+		util.providers.andThen(util.countByProviders).accept(personList,
+				providers);
 
 	}
 
@@ -251,12 +307,14 @@ public class MainClass {
 		while (itr.hasNext()) {
 			String provider = itr.next();
 			for (Person person : personList) {
-				if (person.getEmail().split("@")[1].split("\\.")[0].equals(provider)) {
+				if (person.getEmail().split("@")[1].split("\\.")[0]
+						.equals(provider)) {
 					personSet.add(person);
 				}
 			}
 			emailMap.put(provider, personSet);
-			System.out.println(" The email provider is " + provider + ", the num of users is " + personSet.size());
+			System.out.println(" The email provider is " + provider
+					+ ", the num of users is " + personSet.size());
 			personSet.clear();
 		}
 
