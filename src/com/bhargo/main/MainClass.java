@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +28,8 @@ import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntFunction;
 import java.util.function.IntUnaryOperator;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -44,6 +48,9 @@ import com.bhargo.datastructure.graphs.IEdge;
 import com.bhargo.datastructure.graphs.IVertex;
 import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.domain.Person;
+import com.bhargo.service.Creator;
+import com.bhargo.service.CustomInterface;
+import com.bhargo.service.impl.MyCustomInterfaceImpl;
 import com.bhargo.service.impl.PersonService;
 import com.bhargo.util.Util;
 
@@ -55,16 +62,90 @@ public class MainClass {
 
 	static Util<Person> util = new Util<Person>();
 
-	public static void main(String args[]) throws IOException {
+	public static void main(String args[]) throws IOException, Exception {
 		// To show user count for an email service
 		// traditionalWay();
-		// lambdaWay();
+		//lambdaWay();
 		// streamWay();
 		// JMXDemo();
 		// listToMap();
 		// setupGraph();
 		//forkJoinDemo();
-		//curryDemo(createData());
+		curryDemo(createData());
+		//lambdaDemo();
+	}
+	
+	static void lambdaDemo() throws Exception{
+		
+		//creating a lambda
+		CustomInterface lambdaExp = ()  ->  System.out.println("This is a custom interface lambda");
+		
+		//invoking the lambda
+		lambdaExp.lambdaMethod();
+		
+		//passing lambda as a arg
+		acceptLambda(lambdaExp);
+		
+		List<Person> list = createData();
+		
+		//creating a lambda of type Predicate
+		Predicate<Person> mailPredicate = n -> n.getEmail().contains("gmail");
+		
+		//chaining the predicate lambda inside a stream
+		list.stream().filter(mailPredicate.and(n -> n.getState().equalsIgnoreCase("kerala"))).forEach(n -> System.out.println(n));
+		
+		//old way of sorting a list
+		Collections.sort(list, new Comparator<Person>() {
+			@Override
+			public int compare(Person o1, Person o2) {
+				return o1.getName().compareTo(o2.getName());
+			}			
+		});		
+		
+		//sorting the list using a lambda
+		Collections.sort(list, (Person n1,Person n2) -> n1.getName().compareTo(n2.getName()));
+		//list.forEach(System.out::println);
+		
+		//sorting using method reference
+		Collections.sort(list, Person::comp);
+		list.forEach(System.out::println);
+		
+		//pass method reference to a method accepting lambda
+		acceptTest(System.out::println);
+		
+		//using lambdas to instantiate a class
+		Creator<Person> creator = obj -> new Person((String)obj[0],(Integer)obj[1],(String)obj[2],(String)obj[3]);
+		Person p = creator.create("Ram",25,"Bihar","ram@yahoo.com");
+		System.out.println(p);
+		
+		//contructor reference to create an instance using custom lambda
+		Creator<Person> creator2 = Person::new;
+		Person person = creator2.create("Ram",25,"Bihar","ram@yahoo.com");
+		System.out.println(person);
+		
+		//inbuilt lambda using constructor reference 
+		Supplier<Person> personSupplier = Person::new;
+		Person supplierPersonRef = personSupplier.get();
+		System.out.println(supplierPersonRef);
+	}
+	
+	@FunctionalInterface
+	static interface test {
+		void print();
+	}
+	
+	static void acceptTest(test t) {
+		
+	}
+	
+	//method that returns lambda as a result
+	static CustomInterface returnLambda() {
+		return () -> {};
+	}
+	
+	//method that accetps lambda as an argument
+	static void acceptLambda(CustomInterface lambdaParam) {
+		lambdaParam.lambdaMethod();
 	}
 
 	static void forkJoinDemo() {
@@ -115,15 +196,26 @@ public class MainClass {
 	}
 
 	public static void curryDemo(List<Person> personList) {
-		Function<List<Person>, BiFunction<List<Person>, String, List<Object>>> func = n -> (
-				list, domain) -> n.stream().map((e) -> {
-			return e.getName() + "@" + domain + ".com";
-		}).collect(Collectors.toList());
-
-		func.apply(personList).apply(null, "google")
-				.forEach(MainClass::testMethod);
-		// func.apply(personList).apply(null,
-		// "google").forEach(System.out::println);
+		
+		//simpler way using just streams
+		personList.stream().map(n -> n.getName() + "@google.com").collect(Collectors.toList()).forEach(n -> System.out.println(n));
+		
+		//lambda for the uncurried version
+		BiFunction<List<Person>, String, List<Object>> biFunc =
+				(list,domain) -> list.stream().map(
+						n -> n.getName() + "@google.com").collect(Collectors.toList());
+				
+		//calling the uncurried version, passing 2 params in the same method call		
+		biFunc.apply(personList, "google").forEach(MainClass::testMethod);
+		
+		//lambda for the somewhat curried version
+		Function<List<Person>, Function<String, List<Object>>> func = n -> 
+		domain -> n.stream().map(e -> e.getName() + "@" + domain + ".com").
+				collect(Collectors.toList());
+		
+		//calling the curried version
+		func.apply(personList).apply("google").forEach(MainClass::testMethod);
+		
 		Consumer<String> cons = System.out::println;
 		cons.accept("Hello");
 	}
@@ -189,9 +281,9 @@ public class MainClass {
 		List<Person> personList = null;
 		try {
 			personList = Util.createList();
-			Person amar = new Person("amar", 28, "Chandigarh", "amar@yahoo.com");
+			Person amar = new Person("amar", 28, "Maharastra", "amar@yahoo.com");
 			Person geeta = new Person("geeta", 16, "Gujrat", "geet@yahoo.com");
-			Person nik = new Person("nik", 12, "Kerala", "nik@gmail.com");
+			Person nik = new Person("nik", 12, "Karnataka", "nik@gmail.com");
 			Person john = new Person("john", 35, "Kerala", "john@gmail.com");
 			personList.add(amar);
 			personList.add(geeta);

@@ -25,8 +25,8 @@ public class Util<T> {
 	};
 		
 	public BiConsumer<List<Person>, Set<String>> countByProviders= (list,set) -> {
+		Set<Person> personSet = new HashSet<Person>();
 		set.forEach((n) -> {
-			Set<Person> personSet = new HashSet<Person>();
 			list.forEach((s) -> {
 				if(n.equals(s.getEmail().split("@")[1].split("\\.")[0])) {
 					personSet.add(s);
