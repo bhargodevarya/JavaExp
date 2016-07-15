@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
@@ -39,6 +40,7 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
+import com.bhargo.concurrency.ThreadDemo;
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
 import com.bhargo.datastructure.graphs.AVertex;
@@ -71,8 +73,10 @@ public class MainClass {
 		// listToMap();
 		// setupGraph();
 		//forkJoinDemo();
-		curryDemo(createData());
+		//curryDemo(createData());
 		//lambdaDemo();
+		//ThreadDemo.executorServiceDemo(Callable.class);
+		ThreadDemo.executorServiceInvokeAllDemo();
 	}
 	
 	static void lambdaDemo() throws Exception{
