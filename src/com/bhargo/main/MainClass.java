@@ -49,6 +49,9 @@ import com.bhargo.datastructure.graphs.EmployeeVertex;
 import com.bhargo.datastructure.graphs.IEdge;
 import com.bhargo.datastructure.graphs.IVertex;
 import com.bhargo.datastructure.graphs.model.Employee;
+import com.bhargo.datastructure.lists.UserLinkedList;
+import com.bhargo.datastructure.stack.UserStack;
+import com.bhargo.designpattern.creational.Singleton;
 import com.bhargo.domain.Person;
 import com.bhargo.service.Creator;
 import com.bhargo.service.CustomInterface;
@@ -76,7 +79,30 @@ public class MainClass {
 		//curryDemo(createData());
 		//lambdaDemo();
 		//ThreadDemo.executorServiceDemo(Callable.class);
-		ThreadDemo.executorServiceInvokeAllDemo();
+		//ThreadDemo.executorServiceInvokeAllDemo();
+		//System.out.println(Singleton.class);
+		linkedLiseDemo();
+	}
+	
+	static void linkedLiseDemo() {
+		UserLinkedList<Integer> linkedList = new UserLinkedList<>();
+		linkedList.add(5);
+		linkedList.add(7);
+		linkedList.add(2);
+		linkedList.add(55);
+		System.out.println(linkedList.get(1));
+	}
+	
+	static void stackDemo() throws Exception {
+		UserStack<Integer> stack = new UserStack<>();
+		stack.push(5);
+		stack.push(8);
+		stack.push(15);
+		stack.push(25);
+		System.out.println(stack.size());
+		for(int i=stack.size();i>0;i--) {
+			System.out.println(stack.pop());
+		}
 	}
 	
 	static void lambdaDemo() throws Exception{
