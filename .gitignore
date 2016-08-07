@@ -1,3 +1,8 @@
+.idea
+JavaExp.iml
+JavaExp.ipr
+JavaExp.iws
+build/
 .classpath
 .project
 .git
@@ -5,4 +10,5 @@
 bin
 .gradle
 gradle
+gradlew
 gradlew.bat
