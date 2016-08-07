@@ -41,6 +41,7 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
 import com.bhargo.algorithms.search.BinarySearch;
+import com.bhargo.algorithms.sort.BubbleSort;
 import com.bhargo.concurrency.ThreadDemo;
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
@@ -83,7 +84,8 @@ public class MainClass {
 		//ThreadDemo.executorServiceInvokeAllDemo();
 		//System.out.println(Singleton.class);
 		//linkedLiseDemo();
-		BinarySearch.doBinarySeach("/Users/barya/code/github/text.txt",99);
+		//BinarySearch.doBinarySeach("/Users/barya/code/github/text.txt",99);
+		BubbleSort.doBubbleSort(Arrays.asList(new String[]{"5","2","7","4","0","7","21","57"}));
 	}
 	
 	static void linkedLiseDemo() {
