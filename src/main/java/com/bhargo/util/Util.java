@@ -3,10 +3,11 @@
  */
 package com.bhargo.util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 import com.bhargo.datastructure.graphs.model.Employee;
@@ -40,5 +41,16 @@ public class Util<T> {
 	
 	public static <T> List<T> createList(){
 		return new ArrayList<T>();
+	}
+
+	public static List<String> readFileAsListOfString(String fileName, String splitBy) throws IOException {
+		File file = new File(fileName);
+		BufferedReader buffer = new BufferedReader(new FileReader(file));
+		String line;
+		List<String> data=new ArrayList<>();
+		while ((line = buffer.readLine()) != null) {
+			data = Arrays.asList(line.split(splitBy));
+		}
+	    return data;
 	}
 }

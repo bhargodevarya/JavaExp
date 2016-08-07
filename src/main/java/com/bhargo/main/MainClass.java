@@ -40,6 +40,7 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
+import com.bhargo.algorithms.search.BinarySearch;
 import com.bhargo.concurrency.ThreadDemo;
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
@@ -81,7 +82,8 @@ public class MainClass {
 		//ThreadDemo.executorServiceDemo(Callable.class);
 		//ThreadDemo.executorServiceInvokeAllDemo();
 		//System.out.println(Singleton.class);
-		linkedLiseDemo();
+		//linkedLiseDemo();
+		BinarySearch.doBinarySeach("/Users/barya/code/github/text.txt",99);
 	}
 	
 	static void linkedLiseDemo() {
