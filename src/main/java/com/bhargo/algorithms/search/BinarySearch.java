@@ -34,4 +34,8 @@ public class BinarySearch {
             }
         }
     }
+
+    public void testForReflection () {
+        System.out.println("This has been invoked using reflection");
+    }
 }

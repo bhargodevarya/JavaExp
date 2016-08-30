@@ -55,6 +55,7 @@ import com.bhargo.datastructure.lists.UserLinkedList;
 import com.bhargo.datastructure.stack.UserStack;
 import com.bhargo.designpattern.creational.Singleton;
 import com.bhargo.domain.Person;
+import com.bhargo.reflection.ReflectionDemo;
 import com.bhargo.service.Creator;
 import com.bhargo.service.CustomInterface;
 import com.bhargo.service.impl.MyCustomInterfaceImpl;
@@ -87,6 +88,7 @@ public class MainClass {
 		//BinarySearch.doBinarySeach("/Users/barya/code/github/text.txt",99);
 		//BubbleSort.doBubbleSort(Arrays.asList(new String[]{"5","2","7","4","0","7","21","57"}));
 		ThreadDemo.AtomicIntDemo();
+        ReflectionDemo.reflect();
 	}
 	
 	static void linkedListDemo() {
