@@ -83,12 +83,13 @@ public class MainClass {
 		//ThreadDemo.executorServiceDemo(Callable.class);
 		//ThreadDemo.executorServiceInvokeAllDemo();
 		//System.out.println(Singleton.class);
-		//linkedLiseDemo();
+		//linkedListDemo();
 		//BinarySearch.doBinarySeach("/Users/barya/code/github/text.txt",99);
-		BubbleSort.doBubbleSort(Arrays.asList(new String[]{"5","2","7","4","0","7","21","57"}));
+		//BubbleSort.doBubbleSort(Arrays.asList(new String[]{"5","2","7","4","0","7","21","57"}));
+		ThreadDemo.AtomicIntDemo();
 	}
 	
-	static void linkedLiseDemo() {
+	static void linkedListDemo() {
 		UserLinkedList<Integer> linkedList = new UserLinkedList<>();
 		linkedList.add(5);
 		linkedList.add(7);
