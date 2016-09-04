@@ -17,18 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
-import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.IntBinaryOperator;
-import java.util.function.IntFunction;
-import java.util.function.IntUnaryOperator;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -40,9 +34,6 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
-import com.bhargo.algorithms.search.BinarySearch;
-import com.bhargo.algorithms.sort.BubbleSort;
-import com.bhargo.concurrency.ThreadDemo;
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
 import com.bhargo.datastructure.graphs.AVertex;
@@ -53,12 +44,10 @@ import com.bhargo.datastructure.graphs.IVertex;
 import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.datastructure.lists.UserLinkedList;
 import com.bhargo.datastructure.stack.UserStack;
-import com.bhargo.designpattern.creational.Singleton;
 import com.bhargo.domain.Person;
-import com.bhargo.reflection.ReflectionDemo;
+import com.bhargo.dynamic.DynamicDemo;
 import com.bhargo.service.Creator;
 import com.bhargo.service.CustomInterface;
-import com.bhargo.service.impl.MyCustomInterfaceImpl;
 import com.bhargo.service.impl.PersonService;
 import com.bhargo.util.Util;
 
@@ -87,8 +76,10 @@ public class MainClass {
 		//linkedListDemo();
 		//BinarySearch.doBinarySeach("/Users/barya/code/github/text.txt",99);
 		//BubbleSort.doBubbleSort(Arrays.asList(new String[]{"5","2","7","4","0","7","21","57"}));
-		ThreadDemo.AtomicIntDemo();
-        ReflectionDemo.reflect();
+		//ThreadDemo.AtomicIntDemo();
+        //ReflectionDemo.reflect();
+		//DynamicDemo.longestSubSequenceSum(Arrays.asList(new Integer[]{5,3,-1,6,7,23,-45,12,7,-4}));
+		DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 9, 33, 21, 50, 41, 60}));
 	}
 	
 	static void linkedListDemo() {
