@@ -34,6 +34,7 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
+import com.bhargo.algorithms.sort.Sort;
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
 import com.bhargo.datastructure.graphs.AVertex;
@@ -75,12 +76,26 @@ public class MainClass {
 		//System.out.println(Singleton.class);
 		//linkedListDemo();
 		//BinarySearch.doBinarySeach("/Users/barya/code/github/text.txt",99);
-		//BubbleSort.doBubbleSort(Arrays.asList(new String[]{"5","2","7","4","0","7","21","57"}));
 		//ThreadDemo.AtomicIntDemo();
         //ReflectionDemo.reflect();
 		//DynamicDemo.longestSubSequenceSum(Arrays.asList(new Integer[]{5,3,-1,6,7,23,-45,12,7,-4}));
-		DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 9, 33, 21, 50, 41, 60}));
-	}
+		//DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 9, 33, 21, 50, 41, 60}));
+
+        int[] arr =new int[]{865,8,45,78,62,15,77,846,254};
+		Sort.quickSort(arr);
+        //Sort.sort(arr, 0, arr.length -1);
+        for (Integer in:arr) {
+            System.out.println(in);
+        }
+
+    }
+
+    static class testObj {
+        @Override
+        public int hashCode() {
+            return 777;
+        }
+    }
 	
 	static void linkedListDemo() {
 		UserLinkedList<Integer> linkedList = new UserLinkedList<>();
