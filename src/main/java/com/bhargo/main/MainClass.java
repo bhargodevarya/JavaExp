@@ -3,8 +3,7 @@
  */
 package com.bhargo.main;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -35,7 +34,6 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
-import com.bhargo.algorithms.sort.Sort;
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
 import com.bhargo.datastructure.graphs.AVertex;
@@ -48,7 +46,6 @@ import com.bhargo.datastructure.lists.UserLinkedList;
 import com.bhargo.datastructure.stack.UserStack;
 import com.bhargo.datastructure.tree.BinaryTree;
 import com.bhargo.domain.Person;
-import com.bhargo.dynamic.DynamicDemo;
 import com.bhargo.service.Creator;
 import com.bhargo.service.CustomInterface;
 import com.bhargo.service.impl.PersonService;
@@ -91,6 +88,11 @@ public class MainClass {
         }*/
 
 		myBinaryTreedemo();
+		//Sort.doHeapSort(arr);
+		//Sort.doHeapSort(arr, 0, arr.length -1);
+		//threadInterrupDemo();
+		//serializationDemo();
+		cloneDemo();
     }
 
     private static void myBinaryTreedemo() throws Exception {
@@ -112,9 +114,302 @@ public class MainClass {
         //myBinaryTree.postOrderTraversal();
        // myBinaryTree.preOrderTraversal();
         myBinaryTree.inOrderTraversal();
+
     }
 
-    static class testObj {
+    static void threadInterrupDemo() throws InterruptedException {
+        testObj t1 = new testObj(1);
+        Thread th =new Thread() {
+            @Override
+            public void run() {
+                synchronized (t1) {
+                    try {
+                        while (!Thread.interrupted()) {
+                            System.out.println("not interrupted");
+                            Thread.sleep(1000);
+                            //this.interrupt();
+                        }
+                        for(int i =0;i<=3;i++) {
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                        }
+                        System.out.println("Thread has been interrupted");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        /*Thread th = new Thread(() -> {
+            synchronized (t1) {
+                try {
+                    while (!Thread.interrupted()) {
+                        System.out.println("not interrupted");
+                        Thread.sleep(1000);
+
+                    }
+                    System.out.println("Thread has been interrupted");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        */
+        th.start();
+        Thread.sleep(5000);
+        th.interrupt();
+    }
+    static void externalizationDemo () throws IOException, ClassNotFoundException {
+        ObjectOutputStream oos2 = new ObjectOutputStream(new FileOutputStream(new File("/home/hadoop/ser2.txt")));
+        oos2.writeObject(new horse());
+        oos2.close();
+
+        ObjectInputStream ois2 = new ObjectInputStream(new FileInputStream(new File("/home/hadoop/ser2.txt")));
+        horse h = (horse) ois2.readObject();
+        System.out.println(h.age);
+        ois2.close();
+    }
+
+    /**
+     * every reference variable must implement Seriablizable
+     * no such restriction in the inheritance tree.
+     * if a super class implements Serializable, then child doesnot have to
+     * if child does, super constructor is invoked to set the super class properties
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    static void serializationDemo () throws IOException, ClassNotFoundException {
+        cat cat = new cat(12,"kitty",new strap("kstrap"));
+        File file = new File("/home/hadoop/ser.txt");
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(cat);
+        //oos.flush();
+        oos.close();
+        //fos.flush();
+        //fos.close();
+
+
+        FileInputStream fis = new FileInputStream(file);
+        ObjectInputStream ois =new ObjectInputStream(fis);
+        cat cat2 = (cat)ois.readObject();
+        ois.close();
+        //oos.close();
+        //fis.close();
+        System.out.println(cat2);
+    }
+
+	static void classloaderDemo() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		ClassLoader myClassLoader = new myClassLoader();
+		Class myClass = myClassLoader.loadClass("");
+		myClass.getMethod("hello").invoke(null,20);
+	}
+
+	static class myClassLoader extends ClassLoader {
+		@Override
+		public Class<?> loadClass(String name) throws ClassNotFoundException {
+			if(name.contains("ClassNotInClassPath")) {
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                //write method to create a bytestream from the class file
+                //pass it the defineClass() of the Parent class to get the class Object
+                // invoke resolveClass(class) to link the class
+
+			}
+			return super.loadClass(name);
+		}
+	}
+
+    static class horse implements Externalizable, Cloneable {
+        int age=90;
+
+        public horse() {
+        }
+
+        @Override
+        public void writeExternal(ObjectOutput out) throws IOException {
+            out.write(2);
+        }
+
+        @Override
+        public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+
+            this.age=in.read();
+        }
+    }
+
+	static class cat implements Serializable{
+        public static final long serialVersionUID = 1L;
+        transient private  int age;
+		private String name;
+        private strap strap;
+        private static int count =90;
+        private int num = 77;
+
+        public cat(int age, String name, MainClass.strap strap) {
+            this.age = age;
+            this.name = name;
+            this.strap = strap;
+        }
+
+        public MainClass.strap getStrap() {
+
+            return strap;
+        }
+
+        public void setStrap(MainClass.strap strap) {
+            this.strap = strap;
+        }
+
+        public cat() {
+		}
+
+		public cat(int age, String name) {
+
+			this.age = age;
+			this.name = name;
+		}
+
+        @Override
+        public String toString() {
+            return "cat{" +
+                    "age=" + age +
+                    ", name='" + name + '\'' +
+                    ", strap=" + strap +
+                    ", count=" + count +
+                    ", num=" + num  +
+                    '}';
+        }
+
+        public int getAge() {
+			return age;
+		}
+
+		public void setAge(int age) {
+			this.age = age;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+        private void writeObject(ObjectOutputStream oos) throws IOException {
+            //System.out.println("writing object");
+            //oos.close();
+            oos.defaultWriteObject();
+            oos.writeInt(this.age);
+            oos.writeObject(this.name);
+            oos.writeObject(this.strap);
+            oos.writeObject("this is a custom string");
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        }
+
+        private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+            ois.defaultReadObject();
+            this.age = 99;
+
+        }
+	}
+
+    static class strap implements Serializable{
+        private String brand;
+
+        @Override
+        public String toString() {
+            return "strap{" +
+                    "brand='" + brand + '\'' +
+                    '}';
+        }
+
+        public String getBrand() {
+            return brand;
+        }
+
+        public void setBrand(String brand) {
+            this.brand = brand;
+        }
+
+        public strap() {
+
+        }
+
+        public strap(String brand) {
+
+            this.brand = brand;
+        }
+    }
+
+	static void swapInt(int i, int j) {
+		int[] in = new int[]{i,j};
+        j = in[0];i = in[1];
+	}
+
+    static void m1(String... str) {
+        System.out.println("map");
+    }
+
+    static void m1(String str) {
+        System.out.println("hashmap");
+    }
+
+    /**
+     * class or its super class must implement Cloneable,
+     * public Object clone() must be overridden
+     * reference variables, dont have to
+     *  -if dont, then null, if values not given in the clone method
+     *  -else values given in the clone method
+     *
+     * @throws CloneNotSupportedException
+     */
+    static void cloneDemo() throws CloneNotSupportedException {
+        testObj t1 = new testObj(77);
+        testObj t2 = (testObj) t1.clone();
+        System.out.println(t2);
+    }
+
+    static class testObj extends horse /*implements Cloneable*/{
+		int i;
+        cat cat;
+
+        public testObj(int i, MainClass.cat cat) {
+            this.i = i;
+            this.cat = cat;
+        }
+
+        public testObj(int i) {
+			this.i = i;
+		}
+
+        public testObj() {
+        }
+
+        public int getI() {
+            return i;
+        }
+
+        public void setI(int i) {
+            this.i = i;
+        }
+
+        @Override
+        public String toString() {
+            return "testObj{" +
+                    "i=" + i +
+                    "cat=" + cat +
+                    '}';
+
+        }
+
+        @Override
+        public Object clone() throws CloneNotSupportedException {
+            System.out.println(">>>>>>>>");
+            //return new testObj(99, new cat(77,"kitty", new strap("mystrap")));
+            return super.clone();
+        }
+
         @Override
         public int hashCode() {
             return 777;
