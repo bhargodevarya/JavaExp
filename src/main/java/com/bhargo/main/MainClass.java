@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
@@ -45,6 +46,7 @@ import com.bhargo.datastructure.graphs.IVertex;
 import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.datastructure.lists.UserLinkedList;
 import com.bhargo.datastructure.stack.UserStack;
+import com.bhargo.datastructure.tree.BinaryTree;
 import com.bhargo.domain.Person;
 import com.bhargo.dynamic.DynamicDemo;
 import com.bhargo.service.Creator;
@@ -82,12 +84,24 @@ public class MainClass {
 		//DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 9, 33, 21, 50, 41, 60}));
 
         int[] arr =new int[]{865,8,45,78,62,15,77,846,254};
-		Sort.quickSort(arr);
+		/*Sort.quickSort(arr);
         //Sort.sort(arr, 0, arr.length -1);
         for (Integer in:arr) {
             System.out.println(in);
-        }
+        }*/
 
+		myBinaryTreedemo();
+    }
+
+    private static void myBinaryTreedemo() throws Exception {
+        BinaryTree<Integer> myBinaryTree = new BinaryTree<>();
+        myBinaryTree.add(7);
+        myBinaryTree.add(3);
+        myBinaryTree.add(9);
+        myBinaryTree.add(2);
+        myBinaryTree.add(12);
+
+        System.out.println(myBinaryTree);
     }
 
     static class testObj {
