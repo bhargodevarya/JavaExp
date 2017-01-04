@@ -99,9 +99,19 @@ public class MainClass {
         myBinaryTree.add(3);
         myBinaryTree.add(9);
         myBinaryTree.add(2);
-        myBinaryTree.add(12);
+        myBinaryTree.add(99);
+        myBinaryTree.add(8);
+        myBinaryTree.add(6);
 
-        System.out.println(myBinaryTree);
+        myBinaryTree.daisyAdd(66).daisyAdd(24).daisyAdd(11);
+
+        //myBinaryTree.daisyAdd(10).daisyAdd(9).daisyAdd(8).daisyAdd(7).daisyAdd(6);
+
+        //System.out.println(myBinaryTree);
+
+        //myBinaryTree.postOrderTraversal();
+       // myBinaryTree.preOrderTraversal();
+        myBinaryTree.inOrderTraversal();
     }
 
     static class testObj {

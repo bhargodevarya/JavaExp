@@ -1,5 +1,6 @@
 package com.bhargo.datastructure.tree;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -8,6 +9,14 @@ import java.util.Objects;
 public class BinaryTree<T> {
 
     private node root;
+    private Comparator<T> comparator;
+
+    public BinaryTree() {
+    }
+
+    public BinaryTree(Comparator<T> comparator) {
+        this.comparator = comparator;
+    }
 
     public boolean add(T t) throws Exception {
         node currNode = root;
@@ -20,6 +29,11 @@ public class BinaryTree<T> {
             //return  true;
         }
         return  true;
+    }
+
+    public BinaryTree daisyAdd(T t) throws Exception {
+        add(t);
+        return this;
     }
 
     private void addNode(node currRoot, node newNode) throws Exception {
@@ -45,6 +59,75 @@ public class BinaryTree<T> {
                 lastNode = currRoot;
                 lastNode.setRight(newNode);
             }
+        }
+    }
+
+    public void postOrderTraversal() throws Exception {
+        if(root == null) {
+            throw new Exception("Tree not initialized");
+        }
+
+        node currNode = root;
+        if(currNode.getLeft() != null)
+            postOrderTr(currNode.getLeft());
+        if(currNode.getRight() != null)
+            postOrderTr(currNode.getRight());
+        System.out.println(currNode);
+    }
+
+    private void postOrderTr(node node) {
+        if(node.getLeft() != null) {
+                postOrderTr(node.getLeft());
+        }
+        if(node.getRight() != null) {
+                postOrderTr(node.getRight());
+        }
+        System.out.println(node);
+    }
+
+    public void preOrderTraversal() throws Exception {
+        if(root == null) {
+            throw new Exception("Tree not initialized");
+        }
+        node currNode = root;
+
+        System.out.println(currNode);
+        if(currNode.getLeft() != null)
+            preOrderTr(currNode.getLeft());
+        if(currNode.getRight() != null)
+            preOrderTr(currNode.getRight());
+    }
+
+    private void preOrderTr(node node) {
+        System.out.println(node);
+        if(node.getLeft() != null) {
+            preOrderTr(node.getLeft());
+        } if(node.getRight() != null) {
+            preOrderTr(node.getRight());
+        }
+    }
+
+    public void inOrderTraversal() throws Exception{
+        if(root == null) {
+            throw new Exception("Tree not initialized");
+        }
+        node currNode = root;
+        if(currNode.getLeft() != null) {
+            inOrderTr(currNode.getLeft());
+        }
+        System.out.println(currNode);
+        if(currNode.getRight() != null) {
+            inOrderTr(currNode.getRight());
+        }
+    }
+
+    private void inOrderTr(node node) {
+        if(node.getLeft() != null) {
+            inOrderTr(node.getLeft());
+        }
+        System.out.println(node);
+        if(node.getRight() != null) {
+            inOrderTr(node.getRight());
         }
     }
 
@@ -96,6 +179,9 @@ public class BinaryTree<T> {
 
         @Override
         public int compareTo(node o) {
+            if(comparator != null) {
+                return comparator.compare(this.getValue(), o.getValue());
+            }
             return ((Comparable)this.getValue()).compareTo((Comparable)o.getValue());
             //return this.compareTo(o);
         }
@@ -104,8 +190,8 @@ public class BinaryTree<T> {
         public String toString() {
             return "node{" +
                     "value=" + value +
-                    ", left=" + left +
-                    ", right=" + right +
+                    //", left=" + left +
+                    //", right=" + right +
                     '}';
         }
     }
