@@ -66,13 +66,7 @@ public class BinaryTree<T> {
         if(root == null) {
             throw new Exception("Tree not initialized");
         }
-
-        node currNode = root;
-        if(currNode.getLeft() != null)
-            postOrderTr(currNode.getLeft());
-        if(currNode.getRight() != null)
-            postOrderTr(currNode.getRight());
-        System.out.println(currNode);
+        postOrderTr(root);
     }
 
     private void postOrderTr(node node) {
@@ -89,13 +83,7 @@ public class BinaryTree<T> {
         if(root == null) {
             throw new Exception("Tree not initialized");
         }
-        node currNode = root;
-
-        System.out.println(currNode);
-        if(currNode.getLeft() != null)
-            preOrderTr(currNode.getLeft());
-        if(currNode.getRight() != null)
-            preOrderTr(currNode.getRight());
+        preOrderTr(root);
     }
 
     private void preOrderTr(node node) {
@@ -111,14 +99,7 @@ public class BinaryTree<T> {
         if(root == null) {
             throw new Exception("Tree not initialized");
         }
-        node currNode = root;
-        if(currNode.getLeft() != null) {
-            inOrderTr(currNode.getLeft());
-        }
-        System.out.println(currNode);
-        if(currNode.getRight() != null) {
-            inOrderTr(currNode.getRight());
-        }
+        inOrderTr(root);
     }
 
     private void inOrderTr(node node) {
@@ -130,6 +111,29 @@ public class BinaryTree<T> {
             inOrderTr(node.getRight());
         }
     }
+
+    public boolean delete(T node) {
+        //There are 3 scenarios
+
+        /**
+         * 1. Node to be deleted is a leaf node.
+         * soln: simply delete the node
+         *
+         * 2. Node to be deleted has 1 leaf/child  node
+         *
+         * 3. Node to be deleted has 2 child nodes
+         */
+        return false;
+    }
+
+
+    @Override
+    public String toString() {
+        return "BinaryTree{" +
+                "root=" + root +
+                '}';
+    }
+
 
     private class node implements Comparable<node>{
         private T value;
@@ -194,12 +198,5 @@ public class BinaryTree<T> {
                     //", right=" + right +
                     '}';
         }
-    }
-
-    @Override
-    public String toString() {
-        return "BinaryTree{" +
-                "root=" + root +
-                '}';
     }
 }

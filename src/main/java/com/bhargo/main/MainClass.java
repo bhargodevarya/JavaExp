@@ -92,7 +92,7 @@ public class MainClass {
 		//Sort.doHeapSort(arr, 0, arr.length -1);
 		//threadInterrupDemo();
 		//serializationDemo();
-		cloneDemo();
+		//cloneDemo();
     }
 
     private static void myBinaryTreedemo() throws Exception {
@@ -112,8 +112,8 @@ public class MainClass {
         //System.out.println(myBinaryTree);
 
         //myBinaryTree.postOrderTraversal();
-       // myBinaryTree.preOrderTraversal();
-        myBinaryTree.inOrderTraversal();
+        //myBinaryTree.preOrderTraversal();
+        //myBinaryTree.inOrderTraversal();
 
     }
 
