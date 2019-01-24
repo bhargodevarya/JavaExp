@@ -10,5 +10,8 @@ ListQues.getNthNodeFromLast(2)
 https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/
 ListQues.detectLoop()
 
+https://www.geeksforgeeks.org/reverse-a-linked-list/
+ListQues.reverseLinkedList(ListQues.createDummyLL());
+
 https://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/
 // in-progress

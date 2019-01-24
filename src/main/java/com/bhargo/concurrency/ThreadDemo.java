@@ -8,7 +8,65 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ThreadDemo {
 
-	public static void AtomicIntDemo() {
+    /**
+     * interrupt method only sets the interrupt flag for the thread.
+     * Inside the thread, you have to check the status and then clean up accordingly.
+     * If the thread is sleeing ot waiting, then InterruptedException is thrown
+     */
+	public static void threadInterruptDemo() {
+		Thread t1 = new Thread() {
+			@Override
+			public void run() {
+				int i =0;
+				while (!this.isInterrupted()){
+					System.out.println("loop "+ (++i));
+				}
+				System.out.println("Exiting the thread");
+			}
+		};
+
+		t1.start();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		t1.interrupt();
+		System.out.println("interrupted from outside");
+	}
+
+	public static void countdownLatchDemo() {
+		CountDownLatch countDownLatch = new CountDownLatch(2);
+		new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Thread counting down is " + Thread.currentThread().getName());
+            countDownLatch.countDown();}).start();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Thread counting down is " + Thread.currentThread().getName());
+            countDownLatch.countDown();}).start();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(countDownLatch.getCount());
+        countDownLatch.countDown();
+
+	}
+
+	public static void atomicIntDemo() {
 		AtomicInteger in = new AtomicInteger();
 		final int value = in.get();
 		System.out.println("The value is " + value);
@@ -19,7 +77,7 @@ public class ThreadDemo {
 			System.out.println("The value has been set to 77 ?" + in.compareAndSet(value,77));
 		}).start();
 
-		System.out.println(value);
+		System.out.println(value + " " + in.get());
 
 	}
 	public static void executorServiceDemo(Class clazz) {
@@ -36,6 +94,7 @@ public class ThreadDemo {
 						e.printStackTrace();
 					}
 				});
+			//Callable if submitted, must return a result of the generic type of future object
 			else {
 				result = executorService.submit(() -> {
 					System.out.println(Thread.currentThread().getName());

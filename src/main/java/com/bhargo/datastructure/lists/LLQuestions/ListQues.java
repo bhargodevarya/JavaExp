@@ -90,4 +90,27 @@ public class ListQues {
         System.out.println(node.getValue() + " " + temp.getValue());
         temp = temp.getNext();
     }
+
+    public static void reverseLinkedList(UserLinkedList<Integer> linkedList) {
+        recursivelyReverseLinkedList(linkedList.getHead());
+        UserLinkedList.Node head = newHead;
+        while (head != null) {
+            System.out.println(head.getValue());
+            head = head.getNext();
+        }
+    }
+
+    private static UserLinkedList.Node newHead;
+
+    private static void recursivelyReverseLinkedList(UserLinkedList.Node node) {
+        if (node.getNext() == null) {
+            newHead = node;
+            return;
+        }
+        recursivelyReverseLinkedList(node.getNext());
+        //UserLinkedList.Node temp = node.getNext();
+        //temp.setNext(node);
+        node.getNext().setNext(node);
+        node.setNext(null);
+    }
 }
