@@ -1,0 +1,14 @@
+https://www.geeksforgeeks.org/search-an-element-in-a-linked-list-iterative-and-recursive/
+ListQues.recursiveFind(1);
+
+https://www.geeksforgeeks.org/linked-list-set-3-deleting-node/
+ListQues.demoLLDelete();
+
+https://www.geeksforgeeks.org/nth-node-from-the-end-of-a-linked-list/
+ListQues.getNthNodeFromLast(2)
+
+https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/
+ListQues.detectLoop()
+
+https://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/
+// in-progress
