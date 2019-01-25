@@ -14,4 +14,4 @@ https://www.geeksforgeeks.org/reverse-a-linked-list/
 ListQues.reverseLinkedList(ListQues.createDummyLL());
 
 https://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/
-// in-progress
+ListQues.isPalindrome(ListQues.createDummyLL())

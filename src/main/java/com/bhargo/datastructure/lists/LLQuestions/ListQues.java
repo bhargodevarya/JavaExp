@@ -6,8 +6,8 @@ public class ListQues {
 
     public static UserLinkedList<Integer> createDummyLL() {
         UserLinkedList<Integer> list = new UserLinkedList<>();
-        list.daisyAdd(1).daisyAdd(2)
-                .daisyAdd(3).daisyAdd(7).daisyAdd(5);
+        list.daisyAdd(1).daisyAdd(2).daisyAdd(4)
+                .daisyAdd(3).daisyAdd(2).daisyAdd(1);
         return list;
     }
 
@@ -75,20 +75,23 @@ public class ListQues {
     public static boolean isPalindrome(UserLinkedList<Integer> list) {
         boolean result = false;
         ll = list;
-        recReverseTraversal(list.getHead());
+        result = recReverseTraversal(list.getHead());
         return result;
     }
 
     static UserLinkedList.Node temp;
 
-    private static void recReverseTraversal(UserLinkedList.Node node) {
+    private static boolean recReverseTraversal(UserLinkedList.Node node) {
         if(node == null) {
-            return;
+            return false;
         }
         temp = ll.getHead();
         recReverseTraversal(node.getNext());
         System.out.println(node.getValue() + " " + temp.getValue());
+        if (node.getValue() != temp.getValue())
+            return false;
         temp = temp.getNext();
+        return true;
     }
 
     public static void reverseLinkedList(UserLinkedList<Integer> linkedList) {

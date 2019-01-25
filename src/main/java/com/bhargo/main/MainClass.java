@@ -65,7 +65,8 @@ public class MainClass {
         //ListQues.recursiveFind(2);
         //System.out.println(ListQues.getNthNodeFromLast(2));
         //System.out.println(ListQues.detectLoop());
-        ListQues.reverseLinkedList(ListQues.createDummyLL());
+        //ListQues.reverseLinkedList(ListQues.createDummyLL());
+        System.out.println(ListQues.isPalindrome(ListQues.createDummyLL()));
     }
 
     private static void misc() throws Exception {
