@@ -36,6 +36,7 @@ import javax.management.ObjectName;
 
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
+import com.bhargo.datastructure.array.ArrayQuest;
 import com.bhargo.datastructure.array.MOAlgo.MOAlgo;
 import com.bhargo.datastructure.graphs.AVertex;
 import com.bhargo.datastructure.graphs.EmployeeGraph;
@@ -43,7 +44,6 @@ import com.bhargo.datastructure.graphs.EmployeeVertex;
 import com.bhargo.datastructure.graphs.IEdge;
 import com.bhargo.datastructure.graphs.IVertex;
 import com.bhargo.datastructure.graphs.model.Employee;
-import com.bhargo.datastructure.lists.LLQuestions.ListQues;
 import com.bhargo.datastructure.lists.UserLinkedList;
 import com.bhargo.datastructure.stack.UserStack;
 import com.bhargo.datastructure.tree.BinaryTree;
@@ -68,10 +68,11 @@ public class MainClass {
         //System.out.println(ListQues.detectLoop());
         //ListQues.reverseLinkedList(ListQues.createDummyLL());
         //System.out.println(ListQues.isPalindrome(ListQues.createDummyLL()));
-        List<MOAlgo.Query> queries = Arrays.asList(new MOAlgo.Query(0,3),new MOAlgo.Query(1,7),
-                new MOAlgo.Query(2,8),new MOAlgo.Query(7,8), new MOAlgo.Query(4,8),
-                new MOAlgo.Query(4,4),new MOAlgo.Query(1,2));
-        MOAlgo.processQueries(queries, 15);
+
+
+        //List<MOAlgo.Query> queries = Arrays.asList(new MOAlgo.Query(1,7),new MOAlgo.Query(4,4));
+        int[] arr = new int[]{1,2,3,4,5,6,7,8,9};
+        System.out.println(ArrayQuest.arrayRotation(arr, 19));
     }
 
     private static void misc() throws Exception {
