@@ -86,8 +86,8 @@ public class UserLinkedList<T> implements IList<T> {
     @Override
     public void remove(int index) {
         // TODO Auto-generated method stub
-        // index-1 node's next
-        // index node's next
+        // index-1 Node's next
+        // index Node's next
         if(!validIndex(index)) {
             throw  new IllegalArgumentException("Invalid index");
         }

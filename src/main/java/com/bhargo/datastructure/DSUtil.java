@@ -75,7 +75,7 @@ public class DSUtil {
 		Employee emp7 = new Employee();
 		emp7.setName("Gautam");
 
-		//has to be represented as Map<node,set<edges>>
+		//has to be represented as Map<Node,set<edges>>
 		EmployeeGraph empGraph = new EmployeeGraph();
 		AVertex<Employee> vertex1 = new EmployeeVertex();
 		vertex1.setT(emp1);
@@ -285,7 +285,7 @@ public class DSUtil {
 		 //traverse the edges
 		 while(edgeSetItr.hasNext()) {
 			 IEdge<Employee> edge = edgeSetItr.next();
-			 //get the to node
+			 //get the to Node
 			 IVertex<Employee> toVertex = edge.getNodes().get(1);
 			 
 			 
@@ -347,7 +347,7 @@ public class DSUtil {
 			if(node.equals(vertex)) {
 				return graphRep.get(node);
 			}
-			//System.out.println("node is " + node.getT().getName() + " vertex to find is " + vertex.getT().getName() + ". equals ?? "+ node.equals(vertex));
+			//System.out.println("Node is " + Node.getT().getName() + " vertex to find is " + vertex.getT().getName() + ". equals ?? "+ Node.equals(vertex));
 		}
 		//System.out.println(graphRep.containsKey(vertex));
 		return graphRep.get(vertex);

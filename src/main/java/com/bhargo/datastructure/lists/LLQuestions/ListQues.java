@@ -111,8 +111,8 @@ public class ListQues {
             return;
         }
         recursivelyReverseLinkedList(node.getNext());
-        //UserLinkedList.Node temp = node.getNext();
-        //temp.setNext(node);
+        //UserLinkedList.Node temp = Node.getNext();
+        //temp.setNext(Node);
         node.getNext().setNext(node);
         node.setNext(null);
     }

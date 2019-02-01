@@ -3,55 +3,30 @@
  */
 package com.bhargo.main;
 
-import java.io.*;
-import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveTask;
-import java.lang.reflect.InvocationTargetException;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
-
 import com.bhargo.datastructure.DSUtil;
 import com.bhargo.datastructure.DSUtil.fruit;
-import com.bhargo.datastructure.array.ArrayQuest;
-import com.bhargo.datastructure.array.MOAlgo.MOAlgo;
-import com.bhargo.datastructure.graphs.AVertex;
-import com.bhargo.datastructure.graphs.EmployeeGraph;
-import com.bhargo.datastructure.graphs.EmployeeVertex;
-import com.bhargo.datastructure.graphs.IEdge;
-import com.bhargo.datastructure.graphs.IVertex;
+import com.bhargo.datastructure.graphs.*;
 import com.bhargo.datastructure.graphs.model.Employee;
 import com.bhargo.datastructure.lists.UserLinkedList;
 import com.bhargo.datastructure.stack.UserStack;
 import com.bhargo.datastructure.tree.BinaryTree;
+import com.bhargo.datastructure.tree.BinaryTreeQues;
 import com.bhargo.domain.Person;
 import com.bhargo.service.Creator;
 import com.bhargo.service.CustomInterface;
 import com.bhargo.service.impl.PersonService;
 import com.bhargo.util.Util;
+
+import javax.management.*;
+import java.io.*;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
+import java.util.function.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Bhargo
@@ -71,8 +46,9 @@ public class MainClass {
 
 
         //List<MOAlgo.Query> queries = Arrays.asList(new MOAlgo.Query(1,7),new MOAlgo.Query(4,4));
-        int[] arr = new int[]{1,2,3,4,5,6,7,8,9};
-        System.out.println(ArrayQuest.arrayRotation(arr, 19));
+        //int[] arr = new int[]{1,2,3,4,5,6,7,8,9};
+        //System.out.println(ArrayQuest.arrayRotation(arr, 19));
+        BinaryTreeQues.levelTraversal(BinaryTreeQues.createDummyTree());
     }
 
     private static void misc() throws Exception {
@@ -648,7 +624,7 @@ public class MainClass {
         emp3.setName("Khandekar");
         AVertex<Employee> vertexToStart = new EmployeeVertex();
         vertexToStart.setT(emp3);
-        // finds the node, but still traverses unnecessary nodes
+        // finds the Node, but still traverses unnecessary nodes
         // DSUtil.performBFS(((IGraph<Employee>)empGraph),vertexToStart,
         // vertexToFind);
 

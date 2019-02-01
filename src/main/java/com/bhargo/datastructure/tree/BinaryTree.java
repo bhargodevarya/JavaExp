@@ -8,10 +8,14 @@ import java.util.Objects;
  */
 public class BinaryTree<T> {
 
-    private node root;
+    private Node root;
     private Comparator<T> comparator;
 
     public BinaryTree() {
+    }
+
+    public Node getRoot() {
+        return root;
     }
 
     public BinaryTree(Comparator<T> comparator) {
@@ -19,8 +23,8 @@ public class BinaryTree<T> {
     }
 
     public boolean add(T t) throws Exception {
-        node currNode = root;
-        node node = new node(t);
+        Node currNode = root;
+        Node node = new Node(t);
         if(root == null) {
             root = node;
             //return  true;
@@ -36,15 +40,15 @@ public class BinaryTree<T> {
         return this;
     }
 
-    private void addNode(node currRoot, node newNode) throws Exception {
-        node lastNode;
+    private void addNode(Node currRoot, Node newNode) throws Exception {
+        Node lastNode;
         if(root == null) {
             throw new Exception("Not initialized");
         }
         int compResult = newNode.compareTo(currRoot);
 
         if(compResult == 0) {
-            throw new Exception("node already present");
+            throw new Exception("Node already present");
         } else if (compResult < 0) {
             if(currRoot.getLeft() != null) {
                  addNode(currRoot.getLeft(), newNode);
@@ -69,7 +73,7 @@ public class BinaryTree<T> {
         postOrderTr(root);
     }
 
-    private void postOrderTr(node node) {
+    private void postOrderTr(Node node) {
         if(node.getLeft() != null) {
                 postOrderTr(node.getLeft());
         }
@@ -86,7 +90,7 @@ public class BinaryTree<T> {
         preOrderTr(root);
     }
 
-    private void preOrderTr(node node) {
+    private void preOrderTr(Node node) {
         System.out.println(node);
         if(node.getLeft() != null) {
             preOrderTr(node.getLeft());
@@ -102,7 +106,7 @@ public class BinaryTree<T> {
         inOrderTr(root);
     }
 
-    private void inOrderTr(node node) {
+    private void inOrderTr(Node node) {
         if(node.getLeft() != null) {
             inOrderTr(node.getLeft());
         }
@@ -116,10 +120,10 @@ public class BinaryTree<T> {
         //There are 3 scenarios
 
         /**
-         * 1. Node to be deleted is a leaf node.
-         * soln: simply delete the node
+         * 1. Node to be deleted is a leaf Node.
+         * soln: simply delete the Node
          *
-         * 2. Node to be deleted has 1 leaf/child  node
+         * 2. Node to be deleted has 1 leaf/child  Node
          *
          * 3. Node to be deleted has 2 child nodes
          */
@@ -135,12 +139,12 @@ public class BinaryTree<T> {
     }
 
 
-    private class node implements Comparable<node>{
+    protected class Node implements Comparable<Node>{
         private T value;
-        private node left;
-        private node right;
+        private Node left;
+        private Node right;
 
-        public node(T value) {
+        public Node(T value) {
             this.value = value;
         }
 
@@ -152,19 +156,19 @@ public class BinaryTree<T> {
             this.value = value;
         }
 
-        public node getLeft() {
+        public Node getLeft() {
             return left;
         }
 
-        public void setLeft(node left) {
+        public void setLeft(Node left) {
             this.left = left;
         }
 
-        public node getRight() {
+        public Node getRight() {
             return right;
         }
 
-        public void setRight(node right) {
+        public void setRight(Node right) {
             this.right = right;
         }
 
@@ -172,7 +176,7 @@ public class BinaryTree<T> {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            node node = (node) o;
+            Node node = (Node) o;
             return Objects.equals(getValue(), node.getValue());
         }
 
@@ -182,7 +186,7 @@ public class BinaryTree<T> {
         }
 
         @Override
-        public int compareTo(node o) {
+        public int compareTo(Node o) {
             if(comparator != null) {
                 return comparator.compare(this.getValue(), o.getValue());
             }
@@ -192,7 +196,7 @@ public class BinaryTree<T> {
 
         @Override
         public String toString() {
-            return "node{" +
+            return "Node{" +
                     "value=" + value +
                     //", left=" + left +
                     //", right=" + right +
