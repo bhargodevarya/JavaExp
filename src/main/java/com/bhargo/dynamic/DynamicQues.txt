@@ -1,2 +1,6 @@
 nth number of the fibonacci series
-DynamicDemo.fibinacci(11)
+System.out.println(DynamicDemo.nthFibonacciNumber(11));
+
+https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
+DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 1, 33, 2, 50, 4, 7,9, 12}));
+

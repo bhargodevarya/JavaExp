@@ -10,16 +10,25 @@ public class DynamicDemo {
     static Map<Integer, ArrayList<Integer>> map = new HashMap<>();
 
     public static void longestIncreasingSubsequence(List<Integer> list) {
-        ArrayList<Integer> data = new ArrayList<>();
-        data.add(list.get(0));
+        ArrayList<Integer> increasingSubSeq = new ArrayList<>();
+        increasingSubSeq.add(list.get(0));
 
         for(int i =1; i<list.size(); i++) {
-            if(data.get(data.size() -1) <= list.get(i)) {
-                data.add(list.get(i));
+            if (list.get(i) > increasingSubSeq.get(increasingSubSeq.size()-1)) {
+                //append at the end of the result list
+                increasingSubSeq.add(list.get(i));
+            } else {
+                //replace
+                //replace using binary search
+                for (int j = 0; j<= increasingSubSeq.size()-1; j++) {
+                    if (increasingSubSeq.get(j) > list.get(i)) {
+                        increasingSubSeq.set(j, list.get(i));
+                        break;
+                    }
+                }
             }
         }
-        System.out.println(data.size());
-        data.forEach(n -> System.out.print(n + " "));
+        increasingSubSeq.forEach(n -> System.out.print(n + " "));
     }
 
     public static void longestSubSequenceSum(List<Integer> list) {
@@ -61,7 +70,7 @@ public class DynamicDemo {
         return sum;
     }
 
-    public static int fibinacci(int n) {
+    public static int nthFibonacciNumber(int n) {
         int[] arr = new int[n+1];
         arr[1] = 0;
         arr[2] = arr[3] = 1;

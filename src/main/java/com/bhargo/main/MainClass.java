@@ -53,7 +53,10 @@ public class MainClass {
         //BinaryTreeQues.levelTraversal(BinaryTreeQues.createDummyTree(50,37,75,25,63,41,30,77,15,27));
         //BinaryTreeQues.treeHeight(BinaryTreeQues.createDummyTree(34,12,76,45,27,10,8,53,75,28,29,30,31,32));
         //0 1 1 2 3 5 8 13 21 34 55
-        System.out.println(DynamicDemo.fibinacci(11));
+        //System.out.println(DynamicDemo.nthFibonacciNumber(11));
+        //demo();
+        //DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 1, 33, 2, 50, 4, 7,9, 12}));
+        BinaryTreeQues.printDiagnolTree(BinaryTreeQues.createDummyTree(50,25,75,30,20,80,70, 27, 65, 72, 60, 18));
     }
 
     private static void misc() throws Exception {
@@ -75,7 +78,7 @@ public class MainClass {
         //ThreadDemo.AtomicIntDemo();
         //ReflectionDemo.reflect();
         //DynamicDemo.longestSubSequenceSum(Arrays.asList(new Integer[]{5,3,-1,6,7,23,-45,12,7,-4}));
-        //DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 9, 33, 21, 50, 41, 60}));
+        DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 9, 33, 21, 50, 41, 60}));
 
         int[] arr =new int[]{865,8,45,78,62,15,77,846,254};
         /*Sort.quickSort(arr);
@@ -84,7 +87,7 @@ public class MainClass {
             System.out.println(in);
         }*/
 
-        myBinaryTreedemo();
+        //myBinaryTreedemo();
         //Sort.doHeapSort(arr);
         //Sort.doHeapSort(arr, 0, arr.length -1);
         //threadInterrupDemo();
