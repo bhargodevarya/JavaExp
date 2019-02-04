@@ -1,0 +1,2 @@
+nth number of the fibonacci series
+DynamicDemo.fibinacci(11)

@@ -12,6 +12,7 @@ import com.bhargo.datastructure.stack.UserStack;
 import com.bhargo.datastructure.tree.BinaryTree;
 import com.bhargo.datastructure.tree.BinaryTreeQues;
 import com.bhargo.domain.Person;
+import com.bhargo.dynamic.DynamicDemo;
 import com.bhargo.service.Creator;
 import com.bhargo.service.CustomInterface;
 import com.bhargo.service.impl.PersonService;
@@ -50,7 +51,9 @@ public class MainClass {
         //System.out.println(ArrayQuest.arrayRotation(arr, 19));
         //System.out.println(BinaryTreeQues.treeHeight(BinaryTreeQues.createDummyTree(50,37,75,25,63,41,30,77,15,27)));
         //BinaryTreeQues.levelTraversal(BinaryTreeQues.createDummyTree(50,37,75,25,63,41,30,77,15,27));
-        BinaryTreeQues.treeHeight(BinaryTreeQues.createDummyTree(34,12,76,45,27,10,8,53,75,28,29,30,31,32));
+        //BinaryTreeQues.treeHeight(BinaryTreeQues.createDummyTree(34,12,76,45,27,10,8,53,75,28,29,30,31,32));
+        //0 1 1 2 3 5 8 13 21 34 55
+        System.out.println(DynamicDemo.fibinacci(11));
     }
 
     private static void misc() throws Exception {

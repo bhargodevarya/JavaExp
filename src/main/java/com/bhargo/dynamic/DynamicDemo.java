@@ -61,4 +61,29 @@ public class DynamicDemo {
         return sum;
     }
 
+    public static int fibinacci(int n) {
+        int[] arr = new int[n+1];
+        arr[1] = 0;
+        arr[2] = arr[3] = 1;
+        return fib(n, arr);
+    }
+
+    private static int fib(int n, int[] arr) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1||n == 2|| n == 3) {
+            return arr[n];
+        }
+        if (arr[n] != 0) {
+            System.out.println("found for " + n);
+            return arr[n];
+        } else {
+            System.out.println("not found for " + n);
+        }
+
+        arr[n] = fib(n-1,arr) + fib(n-2, arr);
+        return arr[n];
+    }
+
 }
