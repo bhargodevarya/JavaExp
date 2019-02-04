@@ -2,39 +2,57 @@ package com.bhargo.datastructure.tree;
 
 public class BinaryTreeQues {
 
-    public static BinaryTree<Integer> createDummyTree() {
+    public static BinaryTree<Integer> createDummyTree(int ... values) {
         BinaryTree<Integer> tree = new BinaryTree<>();
-        try {
-            tree.daisyAdd(20).daisyAdd(10).daisyAdd(45).daisyAdd(12)
-            .daisyAdd(30).daisyAdd(60);
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int value : values) {
+            try {
+                tree.add(value);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return tree;
     }
 
+    public static int treeHeight(BinaryTree<Integer> tree) {
+        int result = calHeight(tree.getRoot(), 1);
+        return result;
+    }
+
+    private static int calHeight(BinaryTree.Node node, int i) {
+        boolean leftTraversed = false;
+        if (node.getLeft() == null && node.getRight() == null) {
+            return i;
+        }
+        int leftHeight = i, rightHeight = i;
+        if (node.getLeft() != null) {
+             leftHeight = calHeight(node.getLeft(), ++i);
+            leftTraversed = true;
+        }
+        if (node.getRight() != null) {
+            rightHeight = calHeight(node.getRight(), leftTraversed ? i : ++i);
+        }
+        return Math.max(leftHeight, rightHeight);
+    }
+
     public static void levelTraversal(BinaryTree<Integer> tree) {
         BinaryTree.Node root = tree.getRoot();
-        System.out.println(root.getValue());
-        recLevelTraversal(root);
+        int height = treeHeight(tree);
+
+        for (int i =height; i>=1; i--) {
+            printNode(tree.getRoot(), i);
+        }
     }
 
-    private static void recLevelTraversal(BinaryTree.Node root) {
-        if (root == null) {
+    private static void printNode(BinaryTree.Node root, int height) {
+        if (root == null)
             return;
+        if (height == 1)
+            System.out.print(root.getValue() + " ");
+        else if (height > 1)
+        {
+            printNode(root.getLeft(), height-1);
+            printNode(root.getRight(), height-1);
         }
-        if (root.getLeft() == null && root.getRight() == null) {
-            return;
-        }
-        if (root.getLeft() != null) {
-            System.out.println(root.getLeft().getValue());
-        }
-        if (root.getRight() != null) {
-            System.out.println(root.getRight().getValue());
-        }
-        recLevelTraversal(root.getLeft());
-        recLevelTraversal(root.getRight());
     }
-
-
 }

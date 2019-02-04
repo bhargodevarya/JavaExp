@@ -48,7 +48,9 @@ public class MainClass {
         //List<MOAlgo.Query> queries = Arrays.asList(new MOAlgo.Query(1,7),new MOAlgo.Query(4,4));
         //int[] arr = new int[]{1,2,3,4,5,6,7,8,9};
         //System.out.println(ArrayQuest.arrayRotation(arr, 19));
-        BinaryTreeQues.levelTraversal(BinaryTreeQues.createDummyTree());
+        //System.out.println(BinaryTreeQues.treeHeight(BinaryTreeQues.createDummyTree(50,37,75,25,63,41,30,77,15,27)));
+        //BinaryTreeQues.levelTraversal(BinaryTreeQues.createDummyTree(50,37,75,25,63,41,30,77,15,27));
+        BinaryTreeQues.treeHeight(BinaryTreeQues.createDummyTree(34,12,76,45,27,10,8,53,75,28,29,30,31,32));
     }
 
     private static void misc() throws Exception {
