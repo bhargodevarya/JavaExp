@@ -4,3 +4,5 @@ BinaryTreeQues.levelTraversal(BinaryTreeQues.createDummyTree(50,37,75,25,63,41,3
 
 Height of a tree, recursive solution
 BinaryTreeQues.treeHeight(BinaryTreeQues.createDummyTree(34,12,76,45,27,10,8,53,75,28,29,30,31,32));
+
+https://www.geeksforgeeks.org/find-count-of-singly-subtrees/

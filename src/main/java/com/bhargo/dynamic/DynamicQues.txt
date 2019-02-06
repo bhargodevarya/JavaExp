@@ -1,3 +1,6 @@
+SOLVE ATLEAST THESE QUESTIONS:
+https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/
+
 nth number of the fibonacci series
 System.out.println(DynamicDemo.nthFibonacciNumber(11));
 

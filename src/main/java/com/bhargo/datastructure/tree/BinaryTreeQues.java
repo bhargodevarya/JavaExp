@@ -1,8 +1,9 @@
 package com.bhargo.datastructure.tree;
 
-import com.bhargo.datastructure.lists.LLQuestions.ListQues;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BinaryTreeQues {
 
@@ -83,5 +84,9 @@ public class BinaryTreeQues {
         }
          createMap(root.getLeft(), diagonalDistance+1, map);
          createMap(root.getRight(), diagonalDistance, map);
+    }
+
+    public static void univalTree(BinaryTree tree) {
+
     }
 }

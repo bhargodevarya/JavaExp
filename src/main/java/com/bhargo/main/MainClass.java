@@ -11,6 +11,7 @@ import com.bhargo.datastructure.lists.UserLinkedList;
 import com.bhargo.datastructure.stack.UserStack;
 import com.bhargo.datastructure.tree.BinaryTree;
 import com.bhargo.datastructure.tree.BinaryTreeQues;
+import com.bhargo.dcc.DailyCodingChallenge;
 import com.bhargo.domain.Person;
 import com.bhargo.dynamic.DynamicDemo;
 import com.bhargo.service.Creator;
@@ -56,7 +57,10 @@ public class MainClass {
         //System.out.println(DynamicDemo.nthFibonacciNumber(11));
         //demo();
         //DynamicDemo.longestIncreasingSubsequence(Arrays.asList(new Integer[]{10, 22, 1, 33, 2, 50, 4, 7,9, 12}));
-        BinaryTreeQues.printDiagnolTree(BinaryTreeQues.createDummyTree(50,25,75,30,20,80,70, 27, 65, 72, 60, 18));
+        //BinaryTreeQues.printDiagnolTree(BinaryTreeQues.createDummyTree(50,25,75,30,20,80,70, 27, 65, 72, 60, 18));
+        //BinaryTreeQues.univalTree(BinaryTreeQues.createDummyTree(12,7,13,5,9,9,9,13,13));
+        //System.out.println(DailyCodingChallenge.addUp(new int[]{5,15,3,7,2,9}, 12));
+        Arrays.stream(DailyCodingChallenge.arrayMul(new int[]{4,2,8,1,9})).forEach(System.out::println);
     }
 
     private static void misc() throws Exception {

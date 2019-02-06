@@ -75,6 +75,7 @@ public class ListQues {
     public static boolean isPalindrome(UserLinkedList<Integer> list) {
         boolean result = false;
         ll = list;
+        temp = ll.getHead();
         result = recReverseTraversal(list.getHead());
         return result;
     }
@@ -85,7 +86,6 @@ public class ListQues {
         if(node == null) {
             return false;
         }
-        temp = ll.getHead();
         recReverseTraversal(node.getNext());
         System.out.println(node.getValue() + " " + temp.getValue());
         if (node.getValue() != temp.getValue())
